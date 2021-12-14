@@ -1,0 +1,26 @@
+
+
+.modal-container{
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    background: var(--tp-bg);
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 1000;
+}
+
+.modal-container .modal-contents{
+    width: 50vmax;
+}
+
+
+@media(max-width: 992px){
+    .modal-container .modal-contents{
+        width: 70%;
+    }
+}
