@@ -84,33 +84,38 @@
   background: var(--dark-m);
   border: 2px solid var(--text-g);
   border-radius: 10px;
+  position: relative;
 }
 
 .info-cont .icon {
   width: 50px;
   color: red;
   position: absolute;
-  top: 10px;
-  right: 10px;
-  opacity:.5;
-  background: rgba(255,0,0,.4);
+  top: -20px;
+  right: -15px;
+  opacity: 0.8;
+  background: rgba(255, 0, 0, 0.4);
   padding: 10px;
-  transform: scale(.55);
+  transform: scale(0.55);
   border-radius: 50%;
-  transition: .2s ease;
+  transition: 0.2s ease;
   cursor: pointer;
 }
 
-.info-cont .icon:hover{
-    transform: scale(.65);
-    border-radius: 50%;
-    transition: .2s ease;
-    opacity: 1;
+.info-cont .icon:hover {
+  transform: scale(0.65);
+  border-radius: 50%;
+  transition: 0.2s ease;
+  opacity: 1;
+}
+
+.info-cont a{
+    width: 100%;
 }
 
 .info-cont .r-btn,
 .info-cont .s-btn {
-  width: 50%;
+  width: 100%;
   margin: 10px;
   transition: 0.2s ease;
   transform: scale(0.85);

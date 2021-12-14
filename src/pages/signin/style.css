@@ -1,0 +1,127 @@
+:root {
+    --m-width: 40%;
+  }
+  
+  .auth-cont {
+    width: 100%;
+    height: 100vh;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  
+  .auth-cont .head {
+    width: var(--m-width);
+    position: relative;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    
+  }
+  
+  .auth-cont .head .icon {
+    width: 30px;
+    padding: 5px;
+    color: #777;
+    background: var(--dark-m);
+    border-radius: 5px;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    transform: scale(0.85);
+    transition: 0.2s ease;
+  }
+  
+  .auth-cont .head .icon:hover {
+    transform: scale(0.95);
+    transition: 0.2s ease;
+  }
+  
+  .auth-cont .form-container {
+    width: var(--m-width);
+    position: relative;
+    height: auto;
+    height: 400px;
+  }
+  
+  .auth-cont .form-container .tab {
+    width: 100%;
+    display: flex;
+    background: var(--dark-m);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .auth-cont .form-container .tab .left,
+  .auth-cont .form-container .tab .right {
+    text-align: center;
+    width: 50%;
+    padding: 10px;
+    cursor: pointer;
+    user-select: none;
+    opacity: 0.5;
+  }
+  
+  .auth-cont .form-container .tab .left:hover,
+  .auth-cont .form-container .tab .right:hover {
+    background: var(--text-g);
+    color: #000;
+    font-weight: 600;
+    opacity: 1;
+  }
+  
+  .auth-cont .form-container .tab .left.active {
+    background: var(--text-g);
+    color: #000;
+    font-weight: 600;
+    opacity: 1;
+  }
+  
+  .auth-cont .form-container .tab .right.active {
+    background: var(--text-g);
+    color: #000;
+    font-weight: 600;
+    opacity: 1;
+  }
+  
+  .auth-cont .form-container .form {
+    position: absolute;
+    left: 0px;
+    top: 100px;
+    width: 100%;
+    height: 300px;
+    padding: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background: var(--dark);
+  }
+  
+  .auth-cont .form-container .form .input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background: var(--dark-m);
+    border: none;
+    outline: none;
+    color: #777;
+  }
+  
+  .auth-cont .form-container .form .input:focus {
+    border: 2px solid var(--text-g);
+  }
+  
+  
+  @media(max-width:768px){
+      .auth-cont .head,
+      .auth-cont .form-container {
+          width: 100%;
+      }
+  }

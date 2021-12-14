@@ -1,10 +1,11 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { LightningBoltIcon, ShieldExclamationIcon, XIcon } from '@heroicons/react/solid'
 
 import "./style.css"
 import { SuccessBtn } from '../../helpers/buttons'
 import image from "../../assets/img/car.png"
 import Modal from '../../components/Modal/Modal'
+import { Link } from 'react-router-dom'
 
 function Home() {
     const [isOpen, setIsopen] = useState(false);
@@ -13,9 +14,13 @@ function Home() {
         <>
             {isOpen && <Modal>
                 <div className="info-cont">
-                    <XIcon className="icon" onClick={()=>setIsopen(!isOpen)} />
-                    <SuccessBtn text="Register" className="mt-2 r-btn" />
-                    <SuccessBtn text="Sign In" className="mt-2 s-btn" />
+                    <XIcon className="icon" onClick={() => setIsopen(!isOpen)} />
+                    <Link to="/signup" className="mt-2">
+                        <SuccessBtn text="Register" className="r-btn" />
+                    </Link>
+                    <Link to="/signin" className="mt-2">
+                        <SuccessBtn text="Sign In" className="s-btn" />
+                    </Link>
                 </div>
             </Modal>}
             <div className="main-cont">
@@ -27,7 +32,7 @@ function Home() {
                         <h3>Meet the perfect passenger.</h3>
                         <br />
                         <img src={image} alt="" className="img-fluid car" />
-                        <SuccessBtn onClick={()=>setIsopen(!isOpen)} text="Get Started" className="mt-2" />
+                        <SuccessBtn onClick={() => setIsopen(!isOpen)} text="Get Started" className="mt-2" />
                     </div>
                 </div>
                 <div className="right">

@@ -4,7 +4,9 @@ import React, {useState} from "react"
 
 export function SuccessBtn({onClick, text, className}){
     function handleClick(){
-        onClick()
+        if(onClick){
+            onClick()
+        }
     }
 
     return (
@@ -14,7 +16,9 @@ export function SuccessBtn({onClick, text, className}){
 
 export function DangerBtn({onClick, text, className}){
     function handleClick(){
-        onClick()
+        if(onClick){
+            onClick()
+        }
     }
 
     return (
