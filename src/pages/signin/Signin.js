@@ -33,17 +33,19 @@ function Signin() {
                     <br />
                     {tab === "user" ?
                         <div className="user-form form">
-                            <input type="text" placeholder="Matric Number" className="input" />
+                            <input type="number" placeholder="Matric Number" className="input" />
                             <input type="password" placeholder="Password" className="input" />
                             <SuccessBtn text="Create Account" className={"btn-block"} />
+                            <small>Dont have an account? <Link to="/signup">create one</Link></small>
                         </div> :
                         <div className="driver-form form">
-                            <input type="tel" placeholder="number" className="input"
+                            <input type="tel" placeholder="Phone Number" className="input"
                                 pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
                                 maxLength="11"
                                 required />
                             <input type="password" placeholder="Password" className="input" />
                             <SuccessBtn text="Create Account" className={"btn-block"} />
+                            <small>Dont have an account? <Link to="/signup">create one</Link></small>
                         </div>}
                 </div>
             </div>

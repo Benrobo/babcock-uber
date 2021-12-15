@@ -4,11 +4,11 @@ import {
 } from "react-router-dom"
 
 
-import './App.css';
 import Home from './pages/home/Home';
 import Profile from './pages/profile/Profile';
 import Signin from './pages/signin/Signin';
 import Signup from './pages/signup/Signup';
+import './App.css';
 
 function App() {
   return (

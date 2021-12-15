@@ -46,6 +46,7 @@ function Signup() {
                             <input type="text" placeholder="Matric Number" className="input" />
                             <input type="password" placeholder="Password" className="input" />
                             <SuccessBtn text="Create Account" className={"btn-block"} />
+                            <small>have an account? <Link to="/signup">Sign In</Link></small>
                         </div> :
                         <div className="driver-form form">
                             <input type="text" placeholder="Full Name" className="input" autoFocus />
@@ -57,6 +58,7 @@ function Signup() {
                             <input type="number" placeholder="License Plate Number" className="input" />
                             <input type="password" placeholder="Password" className="input" />
                             <SuccessBtn text="Create Account" className={"btn-block"} />
+                            <small>have an account? <Link to="/signup">Sign In</Link></small>
                         </div>}
                 </div>
             </div>

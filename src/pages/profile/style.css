@@ -1,0 +1,168 @@
+:root {
+  --max-width: 55%;
+}
+
+.profile-cont {
+  width: var(--max-width);
+  margin: 0px auto;
+  position: relative;
+  top: 0px;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.profile-cont::-webkit-scrollbar {
+  display: none;
+}
+
+.profile-cont .icon {
+  width: 20px;
+}
+
+.profile-cont .head {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  width: var(--max-width);
+}
+
+.profile-cont .head .icon {
+  padding: 5px;
+  background: var(--dark-m);
+  color: #ccc;
+  border-radius: 5px;
+  margin-right: 30px;
+}
+
+.profile-cont .user-info-head {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.profile-cont .user-info-head img {
+  width: 5vmax;
+}
+.profile-cont .user-info-head .info .m-info span {
+  color: #777;
+}
+
+
+/* stat */
+.stat-cont{
+    width: 80%;
+    height: auto;
+    padding: 0px;
+    display: flex;
+    align-content: center;
+    justify-content: space-between;
+}
+
+.stat-cont .box{
+    width: 200px;
+    height: 50px;
+    padding: 20px;
+    background: var(--dark-m);
+    border-radius: 5px;
+    display: flex;
+    align-content: center;
+    justify-content: space-between;
+    margin-right: 20px;
+    border-left: 3px solid var(--text-g);
+}
+
+.stat-cont .box .count{
+    font-size: 30px;
+}
+
+.details-cont {
+  width: 70%;
+  height: auto;
+  padding: 20px;
+  background: var(--dark-m);
+  border-radius: 10px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  position: relative;
+}
+
+.details-cont li {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+
+.details-cont li .grey {
+  color: #777;
+}
+.details-cont .edit-btn {
+  padding: 10px 12px;
+  background: var(--dark);
+  border-radius: 5px;
+  color: #ccc;
+  border: none;
+  outline: none;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-family: Poppins;
+  cursor: pointer;
+  transition: 0.2s ease;
+  transform: scale(0.95);
+}
+
+.details-cont .edit-btn:hover {
+  transition: 0.2s ease;
+  transform: scale(1);
+}
+.details-cont .edit-btn:focus {
+  border: 2px solid var(--text-g);
+}
+
+.trips-cont {
+  width: 100%;
+  height: auto;
+  padding: 20px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: row;
+  overflow-x: auto;
+  position: relative;
+}
+
+.trips-cont .trips {
+  width: 200px;
+  height: 220px;
+  background: var(--dark-m);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 50px;
+  margin-right: 20px;
+}
+
+.trips-cont .trips img {
+  width: 100%;
+}
+.trips-cont .trips .trip-info {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.trips-cont .trips .trip-info .location {
+  font-size: 14px;
+}
+.trips-cont .trips .trip-info .time {
+  color: #777;
+  font-size: 13px;
+}
