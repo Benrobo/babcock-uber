@@ -71,3 +71,38 @@
   transition: 0.2s ease;
   transform: scale(0.95);
 }
+
+
+.sugest-cont{
+    width: 350px;
+    height: auto;
+    max-height: 150px;
+    background: var(--dark);
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
+    position: relative;
+    top: 10px;
+    border-radius: 5px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.sugest-cont.hide{
+    height: 0px;
+}
+.sugest-cont.show{
+    height:auto;
+}
+
+.sugest-cont li{
+    padding: 10px;
+    width: 100%;
+    font-family: Poppins;
+    cursor: pointer;
+}
+
+.sugest-cont li:hover{
+    background: #000;
+}
