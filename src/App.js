@@ -9,6 +9,7 @@ import Profile from './pages/profile/Profile';
 import Signin from './pages/signin/Signin';
 import Signup from './pages/signup/Signup';
 import './App.css';
+import Ride from './pages/ride/Ride';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/signin" element={<Signin />} />
           <Route path="/profile/:id" element={<Profile />} />
+          <Route path="/student/ride/:id" element={<Ride />} />
         </Routes>
       </Router>
     </div>

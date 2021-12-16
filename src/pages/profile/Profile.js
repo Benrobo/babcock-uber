@@ -1,52 +1,49 @@
 import React, { useState } from 'react'
 import Navbar from '../../components/Navbar/Navbar'
-import { ArrowLeftIcon } from '@heroicons/react/solid'
 import Switch from 'react-input-switch';
 import "./style.css"
 import { Link } from 'react-router-dom'
 import mapImg from "../../assets/img/map-bg.png"
+import Head from '../../components/MainHead/Head';
 
 function Profile() {
-    const [switchVal, setSwitchVal] = useState(0);
 
     return (
         <>
             <Navbar />
             <div className="profile-cont">
-                <div className="head">
-                    <Link to="/">
-                        <ArrowLeftIcon className="icon" />
-                    </Link>
-                    <h3>Profile</h3>
-                </div>
-                <br />
-                <div className="user-info-head">
-                    <img src="https://avatars.dicebear.com/api/micah/ben.svg" alt="" className="user-img img-fluid" />
-                    <div className="info">
-                        <h3>John Doe</h3>
-                        <div className="m-info">
-                            <span className="info-txt">
-                                student | online <Switch value={switchVal} onChange={setSwitchVal} styles={{ trackChecked: { backgroundColor: 'var(--text-g)' }, buttonChecked: { background: 'green' } }} />
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <br />
+                <Head text="Profile" />
+                <UserInfoHead />
                 <StatReview />
-                <br />
                 <UserProfileDetails />
-                <br />
-                <UserTrips />
-                <br />
+                {/* <UserTrips /> */}
+                <div className="space"></div>
             </div>
         </>
+    )
+}
+function UserInfoHead() {
+    const [switchVal, setSwitchVal] = useState(0);
+
+    return (
+        <div className="user-info-head">
+            <img src="https://avatars.dicebear.com/api/micah/ben.svg" alt="" className="user-img img-fluid" />
+            <div className="info">
+                <h3>John Doe</h3>
+                <div className="m-info">
+                    <span className="info-txt">
+                        student | online <Switch value={switchVal} onChange={setSwitchVal} styles={{ trackChecked: { backgroundColor: 'var(--text-g)' }, buttonChecked: { background: 'green' } }} />
+                    </span>
+                </div>
+            </div>
+        </div>
     )
 }
 
 function StatReview() {
     return (
         <>
-            <p>Stat</p>
+            {/* <p>Stat</p> */}
             <br />
             <div className="stat-cont">
                 <div className="box">
@@ -96,6 +93,13 @@ function UserTrips() {
         <>
             <h3>Your Trips</h3>
             <div className="trips-cont">
+                <div className="trips">
+                    <img src={mapImg} alt="" className="img-fluid" />
+                    <div className="trip-info">
+                        <p className="location"><small>From</small>: Location Here</p>
+                        <span className="time">Mon 22, 2020 4:00pm</span>
+                    </div>
+                </div>
                 <div className="trips">
                     <img src={mapImg} alt="" className="img-fluid" />
                     <div className="trip-info">

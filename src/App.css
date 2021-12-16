@@ -35,4 +35,5 @@ body {
   font-family: Poppins;
   color: var(--text-w);
   overflow-y: hidden;
+  overflow-x: hidden;
 }
