@@ -72,37 +72,97 @@
   transform: scale(0.95);
 }
 
-
-.sugest-cont{
-    width: 350px;
-    height: auto;
-    max-height: 150px;
-    background: var(--dark);
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-    flex-direction: column;
-    position: relative;
-    top: 10px;
-    border-radius: 5px;
-    overflow-x: hidden;
-    overflow-y: scroll;
+.sugest-cont {
+  width: 350px;
+  height: auto;
+  max-height: 150px;
+  background: var(--dark);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  position: relative;
+  top: 10px;
+  border-radius: 5px;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
-.sugest-cont.hide{
-    height: 0px;
+.sugest-cont.hide {
+  height: 0px;
 }
-.sugest-cont.show{
-    height:auto;
-}
-
-.sugest-cont li{
-    padding: 10px;
-    width: 100%;
-    font-family: Poppins;
-    cursor: pointer;
+.sugest-cont.show {
+  height: auto;
 }
 
-.sugest-cont li:hover{
-    background: #000;
+.sugest-cont li {
+  padding: 10px;
+  width: 100%;
+  font-family: Poppins;
+  cursor: pointer;
+}
+
+.sugest-cont li:hover {
+  background: #000;
+}
+
+/* finding driver */
+
+.finding-driver {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  /* background: rgba(0, 0, 0, 0.7); */
+}
+
+.finding-driver .img-cont {
+  width: 200px;
+  background: rgba(255, 0, 0, 0.5);
+  position: relative;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border-radius: 50%;
+  animation: grow 1s linear infinite;
+  transform: scale(0.75);
+  transition: 0.2s ease;
+}
+
+.finding-driver img {
+  width: 100%;
+}
+
+.finding-driver .icon {
+  width: 30px;
+  padding: 5px;
+  border-radius: 50%;
+  color: red;
+  background: rgba(255, 0, 0, 0.5);
+  position: absolute;
+  bottom: 10px;
+  transform: scale(0.75);
+  transition: .2s ease;
+  cursor: pointer;
+}
+
+.finding-driver .icon:hover{
+    transform: scale(.85);
+    transition: .2s ease;
+}
+
+@keyframes grow {
+  0% {
+    box-shadow: 0 0 0 0.7rem #ff010133,
+      0 0 0 1.5rem #ff010133, 0 0 0 5rem #ff010133;
+  }
+  100% {
+    box-shadow: 0 0 0 1.5rem #ff010133,
+      0 0 0 4rem #ff010133, 0 0 0 8rem rgba(255, 255, 255, 0);
+  }
 }

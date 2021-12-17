@@ -31,7 +31,7 @@ function Home() {
                     <div className="text">
                         <h3>Meet the perfect passenger.</h3>
                         <br />
-                        <img src={image} alt="" className="img-fluid car" />
+                        {/* <img src={image} alt="" className="img-fluid car" /> */}
                         <SuccessBtn onClick={() => setIsopen(!isOpen)} text="Get Started" className="mt-2" />
                     </div>
                 </div>
