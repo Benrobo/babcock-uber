@@ -86,12 +86,12 @@ function Ride() {
             <Navbar />
             <div className="ride-cont">
                 <div className="form">
-                <div className="head mb-4">
-                    <Link to="/">
-                        <ArrowLeftIcon className="icon" />
-                    </Link>
-                    <h3>Get a Ride</h3>
-                </div>
+                    <div className="head mb-4">
+                        <Link to="/">
+                            <ArrowLeftIcon className="icon" />
+                        </Link>
+                        <h3>Get a Ride</h3>
+                    </div>
                     <div className="pickup-box box">
                         <CheckCircleIcon className="icon check" />
                         <input
@@ -153,8 +153,6 @@ function Ride() {
                             }} />
                         </div>
                     </Modal>}
-                    {/* modal box */}
-                    {/* <button className="btn submit btn-block">Get a Ride</button> */}
                     <SuccessBtn text="Get a Ride" className="btn submit-btn" onClick={handleGetRide} />
                 </div>
             </div>
