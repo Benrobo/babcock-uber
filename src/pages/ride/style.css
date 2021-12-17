@@ -19,6 +19,29 @@
   background: var(--dark-m);
 }
 
+.ride-cont .head {
+  width: 100%;
+  position: relative;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.ride-cont .head .icon {
+  width: 30px;
+  padding: 5px;
+  color: #777;
+  background: var(--dark-m);
+  border-radius: 5px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  transform: scale(0.85);
+  transition: 0.2s ease;
+}
+
 .ride-cont .box {
   width: 100%;
   height: 60px;
@@ -147,22 +170,22 @@
   position: absolute;
   bottom: 10px;
   transform: scale(0.75);
-  transition: .2s ease;
+  transition: 0.2s ease;
   cursor: pointer;
 }
 
-.finding-driver .icon:hover{
-    transform: scale(.85);
-    transition: .2s ease;
+.finding-driver .icon:hover {
+  transform: scale(0.85);
+  transition: 0.2s ease;
 }
 
 @keyframes grow {
   0% {
-    box-shadow: 0 0 0 0.7rem #ff010133,
-      0 0 0 1.5rem #ff010133, 0 0 0 5rem #ff010133;
+    box-shadow: 0 0 0 0.7rem #ff010133, 0 0 0 1.5rem #ff010133,
+      0 0 0 5rem #ff010133;
   }
   100% {
-    box-shadow: 0 0 0 1.5rem #ff010133,
-      0 0 0 4rem #ff010133, 0 0 0 8rem rgba(255, 255, 255, 0);
+    box-shadow: 0 0 0 1.5rem #ff010133, 0 0 0 4rem #ff010133,
+      0 0 0 8rem rgba(255, 255, 255, 0);
   }
 }

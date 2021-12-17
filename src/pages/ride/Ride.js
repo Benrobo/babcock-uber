@@ -5,6 +5,8 @@ import { CheckCircleIcon, LocationMarkerIcon, XIcon } from "@heroicons/react/sol
 import "./style.css";
 import { SuccessBtn } from "../../helpers/buttons";
 import Modal from "../../components/Modal/Modal";
+import { ArrowLeftIcon } from '@heroicons/react/solid'
+import { Link } from 'react-router-dom'
 
 import cabImg from "../../assets/img/driver.png"
 
@@ -84,7 +86,12 @@ function Ride() {
             <Navbar />
             <div className="ride-cont">
                 <div className="form">
-                    <Head text="Get a Ride" />
+                <div className="head mb-4">
+                    <Link to="/">
+                        <ArrowLeftIcon className="icon" />
+                    </Link>
+                    <h3>Get a Ride</h3>
+                </div>
                     <div className="pickup-box box">
                         <CheckCircleIcon className="icon check" />
                         <input
