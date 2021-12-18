@@ -1,4 +1,5 @@
 import React from 'react'
+// import { useParams } from 'react-router'
 import { Link } from 'react-router-dom'
 import LocationBox from '../../components/LocationBox/LocationBox'
 import { ArrowLeftIcon } from '@heroicons/react/solid'
