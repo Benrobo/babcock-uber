@@ -1,0 +1,87 @@
+.request-cont {
+  width: 100%;
+  max-width: 450px;
+  margin: 10px auto;
+  position: relative;
+  height: 100vh;
+  padding: 12px;
+  overflow-y: auto;
+  margin-bottom: 30px;
+}
+
+.request-cont::-webkit-scrollbar {
+  display: none;
+}
+
+.request-cont .head {
+  width: 100%;
+}
+.request-cont .head .icon {
+  width: 20px;
+}
+
+.request-cont .request-info {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: auto;
+  margin-bottom: 50px;
+}
+
+.request-cont .request-info img {
+  width: 10vmax;
+  border-radius: 50%;
+  background: var(--dark-m);
+
+}
+
+.request-cont .request-info .timer-cont {
+  font-size: 30px;
+}
+
+.request-cont .request-info .actions-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.request-cont .request-info .actions-btn .btn {
+  padding: 10px 25px;
+  border: none;
+  outline: none;
+  border-radius: 30px;
+  font-family: Poppins;
+  transform: scale(0.95);
+  transition: 0.2s ease;
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.request-cont .request-info .actions-btn .btn:hover {
+  transform: scale(1);
+  transition: 0.2s ease;
+  opacity: 1;
+}
+
+.request-cont .request-info .actions-btn .accept {
+  background: var(--text-g);
+  color: #000;
+  font-weight: 600;
+}
+
+.request-cont .request-info .actions-btn .reject {
+  background: var(--dark);
+  color: #ccc;
+  font-weight: 500;
+  border: 3px solid red;
+}
+
+@media (max-width: 300px) {
+  .request-cont .request-info img {
+    width: 20vmax;
+    border-radius: 50%;
+  }
+}

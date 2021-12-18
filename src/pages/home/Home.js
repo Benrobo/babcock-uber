@@ -36,7 +36,7 @@ function Home() {
                     </div>
                 </div>
                 <div className="right">
-                    <p className="head">Features of Go-ride</p>
+                    <p>Features of Go-ride</p>
                     <div className="features-box">
                         <div className="box">
                             <LightningBoltIcon className="icon" />
