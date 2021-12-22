@@ -11,7 +11,8 @@ import Signup from './pages/signup/Signup';
 import './App.css';
 import Ride from './pages/ride/Ride';
 import Request from './pages/request/Request';
-import Arrived from './pages/arrived/Arrived';
+import Passenger from './pages/arrived/Passenger';
+import Driver from './pages/arrived/Driver';
 
 function App() {
   return (
@@ -24,7 +25,8 @@ function App() {
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/student/ride/:id" element={<Ride />} />
           <Route path="/driver/request/:userId" element={<Request />} />
-          <Route path="/arrived/:userId/:driverId" element={<Arrived /> } />
+          <Route path="/arrived/passenger/:id" element={ <Passenger /> } />
+          <Route path="/arrived/driver/:id" element={ <Driver />} />
         </Routes>
       </Router>
     </div>
