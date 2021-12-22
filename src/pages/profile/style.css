@@ -55,8 +55,8 @@
 }
 
 .stat-cont .box {
-  width: 200px;
-  height: 50px;
+  width: 250px;
+  height: 80px;
   padding: 20px;
   background: var(--dark-m);
   border-radius: 5px;

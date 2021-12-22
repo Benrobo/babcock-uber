@@ -12,10 +12,8 @@ function Navbar() {
                 <div className="right">
                     <img src="https://avatars.dicebear.com/api/micah/ben.svg" alt="" onClick={()=>setShow(!show)} className="user-img img-fluid" />
                     {show && <div className="more-info">
-                        <Link to="">Request Ride</Link>
-                        <Link to="">
-                            Notification <span className="badge badge-primary">12</span>
-                        </Link>
+                        <Link to="/profile/dfvdfvdfv">Home</Link>
+                        <Link to="/student/ride/fdvdfv">Request Ride</Link>
                         <Link to="" className="logout">Logout</Link>
                     </div>}
                 </div>
