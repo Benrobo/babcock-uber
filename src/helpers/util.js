@@ -1,3 +1,5 @@
+import jwt_decode from "jwt-decode";
+
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 
@@ -136,6 +138,16 @@ export class Util {
 
   saveLocalstorage(data) {
     localStorage.setItem("babcock-auth", JSON.stringify(data));
+  }
+
+  decodeJwt(token) {
+    if (token === "" || token === undefined) {
+      return new Notification().error(
+        "Invalid jwt token, cant decode empty string or token is invalid"
+      );
+    }
+
+    return jwt_decode(token);
   }
 }
 

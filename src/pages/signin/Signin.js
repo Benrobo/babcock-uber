@@ -71,9 +71,18 @@ function Signin() {
 
         if (req.status === 200) {
           notif.success("Succesfully loggedIn");
+          // decode token
+          const { accessToken, refreshToken } = res;
+          const { id, role } = util.decodeJwt(refreshToken);
+          const saveuserInfo = {
+            id,
+            role,
+            accessToken,
+            refreshToken,
+          };
           // save data to localstorage
-          util.saveLocalstorage(res);
-          util.redirect("/", 2000);
+          util.saveLocalstorage(saveuserInfo);
+          util.redirect(`/profile/${id}`, 1500);
           return;
         }
         notif.error(res.msg);
