@@ -119,6 +119,24 @@ export class Util {
     }
     return res.status(code).json(payload);
   }
+
+  redirect(path, time = 1000) {
+    if (
+      path === undefined ||
+      path === "" ||
+      time === undefined ||
+      time === ""
+    ) {
+      return (window.location = "/");
+    }
+    setTimeout(() => {
+      return (window.location = path);
+    }, time);
+  }
+
+  saveLocalstorage(data) {
+    localStorage.setItem("babcock-auth", JSON.stringify(data));
+  }
 }
 
 export class Http {

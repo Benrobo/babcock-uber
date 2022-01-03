@@ -1,10 +1,10 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 import { ArrowLeftIcon } from "@heroicons/react/solid";
 
 import { SuccessBtn } from "../../helpers/buttons";
 import "./style.css";
-import { Link } from "react-router-dom";
 
 import { Notification, Util, Http } from "../../helpers/util";
 
@@ -23,7 +23,7 @@ function Signup() {
   const [platenumber, setPlatenumber] = useState("");
   const [password, setPassword] = useState("");
 
-  function handleClick() {
+  async function handleClick() {
     // validate input
     if (fullname === "" || phonenumber === "" || password === "") {
       return notif.error("all fields are required");
@@ -81,8 +81,11 @@ function Signup() {
       },
       (data) => {
         const { req, res } = data;
+
         if (req.status === 200) {
-          return notif.success(res.msg);
+          notif.success(res.msg);
+          util.redirect("/signin", 2000);
+          return;
         }
         notif.error(res.msg);
       }
