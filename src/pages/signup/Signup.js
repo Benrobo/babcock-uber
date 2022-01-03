@@ -11,7 +11,7 @@ import { Notification, Util, Http } from "../../helpers/util";
 // instance
 const notif = new Notification(5000);
 const util = new Util();
-const http = new Http()
+const http = new Http();
 
 function Signup() {
   const [tab, setTab] = useState("student");
@@ -35,8 +35,8 @@ function Signup() {
     }
 
     // validate phonenumber
-    if(!util.validatePhonenumber(phonenumber)){
-        return notif.error("Invalid phonenumber: eg 07056448763");
+    if (!util.validatePhonenumber(phonenumber)) {
+      return notif.error("Invalid phonenumber: eg 07056448763");
     }
 
     // validate matric number
@@ -51,18 +51,44 @@ function Signup() {
 
     // else if every condition was met
     // make request to server
-    const userData = {
-        name: fullname,
-        email: mail,
-        role: tab,
-        phoneNumber: phonenumber,
-        matricNumber: matricnumber,
-        password: password
+    const userData = {};
+
+    if (tab === "student") {
+      userData["name"] = fullname;
+      userData["email"] = mail;
+      userData["role"] = tab;
+      userData["phoneNumber"] = phonenumber;
+      userData["matricNUmber"] = matricnumber;
+      userData["password"] = password;
     }
-    const url = "http://localhost:5000/api/auth/register"
-    http.post(url, userData , (data)=>{
-        console.log(data)
-    })
+
+    if (tab === "driver") {
+      userData["name"] = fullname;
+      userData["email"] = mail;
+      userData["role"] = tab;
+      userData["phoneNumber"] = phonenumber;
+      userData["plateNumber"] = platenumber;
+      userData["password"] = password;
+    }
+
+    console.log(userData);
+    const url = "http://localhost:5000/api/auth/register";
+    http.post(
+      url,
+      userData,
+      {
+        "content-type": "application/json",
+      },
+      (data) => {
+        const { req, res } = data;
+
+        if (req.status === 200) {
+          return notif.success(res.msg);
+        }
+
+        notif.error(res.msg);
+      }
+    );
   }
 
   return (
