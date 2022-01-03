@@ -191,7 +191,7 @@ function Signup() {
               className={"btn-block"}
             />
             <small>
-              have an account? <Link to="/signup">Sign In</Link>
+              have an account? <Link to="/signin">Sign In</Link>
             </small>
           </div>
         </div>

@@ -20,8 +20,7 @@ function Signin() {
   const [matricnumber, setMatricnumber] = useState("");
   const [password, setPassword] = useState("");
 
-  async function handleClick() {
-    console.log(phonenumber, matricnumber, tab);
+  function handleClick() {
     // validate input
     if ((phonenumber === "" || password === "") && tab === "driver") {
       setPhonenumber("");
@@ -73,6 +72,13 @@ function Signin() {
           notif.success("Succesfully loggedIn");
           // decode token
           const { accessToken, refreshToken } = res;
+          if (
+            util.decodeJwt(refreshToken).error ||
+            util.decodeJwt(refreshToken).msg
+          ) {
+            notif.error(util.decodeJwt(refreshToken));
+            return Error(util.decodeJwt(refreshToken).msg);
+          }
           const { id, role } = util.decodeJwt(refreshToken);
           const saveuserInfo = {
             id,

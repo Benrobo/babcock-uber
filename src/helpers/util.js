@@ -141,13 +141,39 @@ export class Util {
   }
 
   decodeJwt(token) {
-    if (token === "" || token === undefined) {
+    try {
+      if (token === "" || token === undefined) {
+        return new Notification().error(
+          "Invalid jwt token, cant decode empty string or token is invalid"
+        );
+      }
+
+      return jwt_decode(token);
+    } catch (e) {
+      return { msg: "Invalid jwt token", error: e.message };
+    }
+  }
+
+  getLocalstorageData() {
+    if (localStorage.getItem("babcock-auth") === null) {
       return new Notification().error(
-        "Invalid jwt token, cant decode empty string or token is invalid"
+        "babcock-auth notfound in localstorage.."
       );
     }
 
-    return jwt_decode(token);
+    // we dont just wanna send the, data from localstorage, instead we wanna send the user
+    // data which is valid with the one in our database
+
+    let decoded = this.decodeJwt(
+      JSON.parse(localStorage.getItem("babcock-auth")).refreshToken
+    );
+
+    if (decoded.msg || decoded.error) {
+      return { error: decoded.error };
+    }
+
+    // the decoded looks like {id, role, refreshToken, accessTokenf}
+    return decoded;
   }
 }
 
