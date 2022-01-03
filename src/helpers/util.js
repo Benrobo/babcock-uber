@@ -134,7 +134,7 @@ export class Http {
     try {
       const req = await fetch(url);
       const res = await req.json();
-      return cb({ res, req });
+      return cb({ req, res });
     } catch (e) {
       return cb(e);
     }
@@ -167,7 +167,7 @@ export class Http {
       });
       const res = await req.json();
 
-      return cb({ res, req });
+      return cb({ req, res });
     } catch (e) {
       return cb(e);
     }

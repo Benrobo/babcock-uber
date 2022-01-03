@@ -58,7 +58,7 @@ function Signup() {
       userData["email"] = mail;
       userData["role"] = tab;
       userData["phoneNumber"] = phonenumber;
-      userData["matricNUmber"] = matricnumber;
+      userData["matricNumber"] = matricnumber;
       userData["password"] = password;
     }
 
@@ -81,11 +81,9 @@ function Signup() {
       },
       (data) => {
         const { req, res } = data;
-
         if (req.status === 200) {
           return notif.success(res.msg);
         }
-
         notif.error(res.msg);
       }
     );
