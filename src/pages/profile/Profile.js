@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useParams } from "react-router";
 import Navbar from "../../components/Navbar/Navbar";
 import Switch from "react-input-switch";
@@ -6,12 +6,13 @@ import "./style.css";
 import { Link } from "react-router-dom";
 import mapImg from "../../assets/img/map-bg.png";
 import Head from "../../components/MainHead/Head";
-import { Util, Notification } from "../../helpers/util";
+import { Util, Notification, Http } from "../../helpers/util";
 
 import DataContext from "../../context/DataContext";
 
 const util = new Util();
 const notyf = new Notification();
+const http = new Http();
 const local = util.getLocalstorageData();
 
 // if an error is present when getting data from this util function
@@ -22,12 +23,11 @@ if (local.error) {
 }
 
 function Profile() {
-  const context = useContext(DataContext);
+  const { error, authUserInfo, loading } = useContext(DataContext);
+
   // check if the /profile/:id is valid
   const params = useParams();
   const local = util.getLocalstorageData();
-
-  console.log(context);
 
   if (
     params.id !== local.id ||
@@ -35,19 +35,31 @@ function Profile() {
     local === undefined ||
     local === null
   ) {
-    return util.redirect("/signin", 0);
+    return util.redirect("/notfound/" + params.id, 0);
   }
 
   return (
     <>
       <Navbar />
       <div className="profile-cont">
-        <Head text="Profile" />
-        <UserInfoHead userInfo={"dfbv"} />
-        <StatReview />
-        <UserProfileDetails />
-        {/* <UserTrips /> */}
-        <div className="space"></div>
+        {loading === true ? (
+          "loading ..."
+        ) : error ? (
+          <p>{error}</p>
+        ) : (
+          <>
+            <Head text="Profile" />
+            <UserInfoHead userInfo={authUserInfo} loadingState={loading} />
+            <StatReview />
+            <UserProfileDetails
+              userInfo={authUserInfo}
+              loadingState={loading}
+              localInfo={local}
+            />
+            {/* <UserTrips /> */}
+            <div className="space"></div>
+          </>
+        )}
       </div>
     </>
   );
@@ -55,50 +67,56 @@ function Profile() {
 
 // top head container
 
-function UserInfoHead() {
+function UserInfoHead({ userInfo, loadingState }) {
   const [switchVal, setSwitchVal] = useState(0);
   const [switchState, setSwitchState] = useState(true);
 
-  return (
-    <div className="user-info-head">
-      <img
-        src="https://avatars.dicebear.com/api/micah/ben.svg"
-        alt=""
-        className="user-img img-fluid"
-      />
-      <div className="info">
-        <h3>John Doe</h3>
-        <div className="m-info">
-          <span className="info-txt">
-            {local.role === "student" ? (
-              "student"
-            ) : (
-              <>
-                <span className="mr-2">Driver</span>
-                <Switch
-                  value={switchState ? 1 : 0}
-                  onChange={(e) => setSwitchState(!switchState)}
-                  styles={{
-                    track: {
-                      backgroundColor: "#777",
-                    },
-                    trackChecked: {
-                      backgroundColor: "#4ac074",
-                    },
-                    button: {
-                      backgroundColor: "#272727",
-                    },
-                    buttonChecked: {
-                      backgroundColor: "green",
-                    },
-                  }}
-                />
-              </>
-            )}
-          </span>
+  const local = util.getLocalstorageData();
+
+  return loadingState === true ? (
+    "loading ..."
+  ) : (
+    <>
+      <div className="user-info-head">
+        <img
+          src={userInfo[0] === undefined ? "" : userInfo[0].profilePics}
+          alt={"img"}
+          className="user-img img-fluid mr-4"
+        />
+        <div className="info">
+          <h3>{userInfo[0] === undefined ? "" : userInfo[0].name}</h3>
+          <div className="m-info">
+            <span className="info-txt">
+              {local.role === "student" ? (
+                "student"
+              ) : (
+                <>
+                  <span className="mr-2">Driver</span>
+                  <Switch
+                    value={switchState ? 1 : 0}
+                    onChange={(e) => setSwitchState(!switchState)}
+                    styles={{
+                      track: {
+                        backgroundColor: "#777",
+                      },
+                      trackChecked: {
+                        backgroundColor: "#4ac074",
+                      },
+                      button: {
+                        backgroundColor: "#272727",
+                      },
+                      buttonChecked: {
+                        backgroundColor: "green",
+                      },
+                    }}
+                  />
+                </>
+              )}
+            </span>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
@@ -121,24 +139,40 @@ function StatReview() {
   );
 }
 
-function UserProfileDetails() {
+function UserProfileDetails({ userInfo, loadingState, localInfo }) {
+  const [edit, setEdit] = useState(false);
+
+  console.log(userInfo[0]);
+
   return (
     <div className="details-cont">
       <li>
         <span className="grey">name</span>
-        <span className="detail-txt">John Doe</span>
+        <span className="detail-txt">
+          {userInfo[0] === undefined ? "null" : userInfo[0].name}
+        </span>
       </li>
       <li>
         <span className="grey">email</span>
-        <span className="detail-txt">test@gmail.com</span>
+        <span className="detail-txt">
+          {userInfo[0] === undefined ? "null" : userInfo[0].mail}
+        </span>
       </li>
       <li>
-        <span className="grey">matric number</span>
-        <span className="detail-txt">334c587</span>
+        <span className="grey">
+          {localInfo.role === "student" ? "matric number" : "plate number"}
+        </span>
+        <span className="detail-txt">
+          {userInfo[0] === undefined
+            ? "null"
+            : userInfo[0].usersIdentifier.split("-")[1]}
+        </span>
       </li>
       <li>
-        <span className="grey">Place Number</span>
-        <span className="detail-txt">RGB76GH</span>
+        <span className="grey">Phonenumber</span>
+        <span className="detail-txt">
+          {userInfo[0] === undefined ? "null" : userInfo[0].phoneNumber}
+        </span>
       </li>
       <li>
         <span className="grey">password</span>

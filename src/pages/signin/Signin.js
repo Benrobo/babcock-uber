@@ -7,6 +7,7 @@ import { SuccessBtn } from "../../helpers/buttons";
 import "./style.css";
 
 import { Notification, Util, Http } from "../../helpers/util";
+import { Notyf } from "notyf";
 
 // instance
 const notif = new Notification(5000);
@@ -58,15 +59,17 @@ function Signin() {
       userData["password"] = password;
     }
 
-    const url = "http://localhost:5000/api/auth/login";
-    http.post(
-      url,
-      userData,
-      {
-        "content-type": "application/json",
-      },
-      (data) => {
-        const { req, res } = data;
+    async function signinUser() {
+      const url = "http://localhost:5000/api/auth/login";
+      try {
+        const req = await fetch(url, {
+          method: "post",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(userData),
+        });
+        const res = await req.json();
 
         if (req.status === 200) {
           notif.success("Succesfully loggedIn");
@@ -92,8 +95,11 @@ function Signin() {
           return;
         }
         notif.error(res.msg);
+      } catch (e) {
+        notif.error(e.message);
       }
-    );
+    }
+    signinUser();
   }
 
   return (
@@ -116,6 +122,7 @@ function Signin() {
                 onClick={(e) => {
                   setTab(e.target.value);
                   setTabState(!tabState);
+                  setMatricnumber("");
                 }}
                 className="radio"
               />
@@ -129,6 +136,7 @@ function Signin() {
                 onClick={(e) => {
                   setTab(e.target.value);
                   setTabState(!tabState);
+                  setPhonenumber("");
                 }}
                 className="radio"
               />
@@ -141,6 +149,7 @@ function Signin() {
               type={tab === "student" ? "text" : "tel"}
               placeholder={tab === "student" ? "Matric Number" : "Phone Number"}
               className="input"
+              value={tab === "student" ? matricnumber : phonenumber}
               maxLength={tab === "student" ? "9" : "11"}
               pattern={tab === "student" ? "" : "[0-9]{3}-[0-9]{3}-[0-9]{4}"}
               required

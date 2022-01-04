@@ -12,6 +12,7 @@ import Passenger from "./pages/arrived/Passenger";
 import Driver from "./pages/arrived/Driver";
 
 import { DataContextProvider } from "./context/DataContext";
+import Notfound from "./pages/notfound/Notfound";
 
 function App() {
   return (
@@ -28,6 +29,8 @@ function App() {
             <Route path="/driver/request/:userId" element={<Request />} />
             <Route path="/arrived/passenger/:id" element={<Passenger />} />
             <Route path="/arrived/driver/:id" element={<Driver />} />
+            <Route path="/notfound/:pageId" element={<Notfound />} />
+            <Route path="*" element={<Notfound />} />
           </Routes>
         </Router>
       </>
