@@ -11,8 +11,14 @@ import { SuccessBtn } from "../../helpers/buttons";
 import Modal from "../../components/Modal/Modal";
 import { ArrowLeftIcon } from "@heroicons/react/solid";
 import { Link, useParams } from "react-router-dom";
-
+import { Socket } from "../../sockets";
 import cabImg from "../../assets/img/driver.png";
+
+import { io } from "socket.io-client";
+import { Util, Notification } from "../../helpers/util";
+
+const util = new Util();
+const notif = new Notification();
 
 let locations = [
   "Babcock Guest house",
@@ -49,6 +55,32 @@ let locations = [
 ];
 
 function Ride() {
+  let params = useParams();
+  const local = util.getLocalstorageData();
+
+  if (
+    params.id !== local.id ||
+    !local ||
+    local === undefined ||
+    local === null
+  ) {
+    util.redirect("/notfound/" + params.id, 0);
+  }
+
+  return (
+    <>
+      <Navbar />
+
+      {local.role === "student" ? (
+        <StudentRideRequestForm />
+      ) : (
+        <DriverRidePage />
+      )}
+    </>
+  );
+}
+
+function StudentRideRequestForm() {
   const [pickup, setPickup] = useState("");
   const [drop, setDrop] = useState("");
   const [suggestPickupHide, setPickupSuggestHide] = useState(false);
@@ -60,20 +92,31 @@ function Ride() {
   const [loading, setLoading] = useState(false);
 
   let params = useParams();
+  const local = util.getLocalstorageData();
 
-  console.log(params);
+  if (
+    params.id !== local.id ||
+    !local ||
+    local === undefined ||
+    local === null
+  ) {
+    util.redirect("/notfound/" + params.id, 0);
+  }
+
+  // Handle all socket connection here
+  const socket = new Socket(io);
+  //listen for any connection from backend
+  socket.initMain();
 
   function handleGetRide() {
     if (drop === "" || pickup === "") {
-      return alert("Fields cant be empty");
+      return notif.error("Fields cant be empty");
     }
-
-    let locationData = {
-      from: pickup,
-      to: drop,
-    };
-    setGetrideData(locationData);
+    // setGetrideData(locationData);
     setLoading(true);
+
+    // handle ride request
+    socket.handleRideRequestPost(pickup, drop, local.id, local.role);
   }
 
   function searchLocations(text) {
@@ -87,95 +130,95 @@ function Ride() {
 
     setSuggestions([...matches]);
   }
-
   return (
-    <>
-      <Navbar />
-      <div className="ride-cont">
-        <div className="form">
-          <div className="head mb-4">
-            <Link to="/">
-              <ArrowLeftIcon className="icon" />
-            </Link>
-            <h3>Get a Ride</h3>
-          </div>
-          <div className="pickup-box box">
-            <CheckCircleIcon className="icon check" />
-            <input
-              type="text"
-              placeholder="Pickup location"
-              className="pickup inp"
-              value={pickup}
-              onChange={(e) => {
-                setPickup(e.target.value);
-                searchLocations(e.target.value);
-                setAction("pickup");
-              }}
-            />
-          </div>
-          {suggestPickupHide && (
-            <Suggestions
-              locations={suggestions}
-              select={setPickup}
-              setSuggestions={setSuggestions}
-              setAction={setAction}
-              action={checkAction}
-              setPickupSuggestHide={setPickupSuggestHide}
-            />
-          )}
-          <div className="drop-box box">
-            <LocationMarkerIcon className="icon location" />
-            <input
-              type="text"
-              placeholder="Drop location"
-              className="drop inp"
-              value={drop}
-              onChange={(e) => {
-                setDrop(e.target.value);
-                searchLocations(e.target.value);
-                setAction("drop");
-              }}
-            />
-          </div>
-          {suggestDropHide && (
-            <Suggestions
-              locations={suggestions}
-              select={setDrop}
-              setSuggestions={setSuggestions}
-              setAction={setAction}
-              action={checkAction}
-              setDropSuggestHide={setDropSuggestHide}
-            />
-          )}
-          <br />
-          {loading && (
-            <Modal>
-              <div className="finding-driver">
-                <div className="img-cont">
-                  <img
-                    src={cabImg}
-                    alt=""
-                    className="driver-lookup img-fluid"
-                  />
-                </div>
-                <XIcon
-                  className="icon"
-                  onClick={() => {
-                    setLoading(false);
-                    setGetrideData(null);
-                    alert("ride was cancel");
-                  }}
-                />
-              </div>
-            </Modal>
-          )}
-          <SuccessBtn
-            text="Get a Ride"
-            className="btn submit-btn"
-            onClick={handleGetRide}
+    <div className="ride-cont">
+      <div className="form">
+        <div className="head mb-4">
+          <Link to="/">
+            <ArrowLeftIcon className="icon" />
+          </Link>
+          <h3>Get a Ride</h3>
+        </div>
+        <div className="pickup-box box">
+          <CheckCircleIcon className="icon check" />
+          <input
+            type="text"
+            placeholder="Pickup location"
+            className="pickup inp"
+            value={pickup}
+            onChange={(e) => {
+              setPickup(e.target.value);
+              searchLocations(e.target.value);
+              setAction("pickup");
+            }}
           />
         </div>
+        {suggestPickupHide && (
+          <Suggestions
+            locations={suggestions}
+            select={setPickup}
+            setSuggestions={setSuggestions}
+            setAction={setAction}
+            action={checkAction}
+            setPickupSuggestHide={setPickupSuggestHide}
+          />
+        )}
+        <div className="drop-box box">
+          <LocationMarkerIcon className="icon location" />
+          <input
+            type="text"
+            placeholder="Drop location"
+            className="drop inp"
+            value={drop}
+            onChange={(e) => {
+              setDrop(e.target.value);
+              searchLocations(e.target.value);
+              setAction("drop");
+            }}
+          />
+        </div>
+        {suggestDropHide && (
+          <Suggestions
+            locations={suggestions}
+            select={setDrop}
+            setSuggestions={setSuggestions}
+            setAction={setAction}
+            action={checkAction}
+            setDropSuggestHide={setDropSuggestHide}
+          />
+        )}
+        <br />
+        {loading && (
+          <Modal>
+            <div className="finding-driver">
+              <div className="img-cont">
+                <img src={cabImg} alt="" className="driver-lookup img-fluid" />
+              </div>
+              <XIcon
+                className="icon"
+                onClick={() => {
+                  setLoading(false);
+                  setGetrideData(null);
+                  notif.error("ride was cancel");
+                }}
+              />
+            </div>
+          </Modal>
+        )}
+        <SuccessBtn
+          text="Get a Ride"
+          className="btn submit-btn"
+          onClick={handleGetRide}
+        />
       </div>
+    </div>
+  );
+}
+
+function DriverRidePage() {
+  return (
+    <>
+      <h1>Just A Driver</h1>
     </>
   );
 }

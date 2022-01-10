@@ -83,10 +83,11 @@ function Signin() {
           notif.error(util.decodeJwt(refreshToken));
           return Error(util.decodeJwt(refreshToken).msg);
         }
-        const { id, role } = util.decodeJwt(refreshToken);
+        const { id, role, status } = util.decodeJwt(refreshToken);
         const saveuserInfo = {
           id,
           role,
+          status,
           accessToken,
           refreshToken,
         };

@@ -25,7 +25,7 @@ function Navbar() {
           {show && (
             <div className="more-info">
               <Link to={`/profile/${id}`}>Home</Link>
-              <Link to={`/student/ride/${id}`}>Request Ride</Link>
+              <Link to={`/users/ride/${id}`}>Request Ride</Link>
               <p
                 to=""
                 className="logout"
