@@ -17,44 +17,13 @@ export function DataContextProvider(props) {
   // localstorageData
   const locData = util.getLocalstorageData();
 
-  // fetch data
-  // useEffect(() => {
-  //   async function getUserData() {
-  //     setLoading(true);
-  //     const url = "http://localhost:5000/api/users";
-  //     const sendData = {
-  //       userId: locData.id,
-  //       role: locData.role,
-  //     };
-
-  //     try {
-  //       await http.post(
-  //         url,
-  //         sendData,
-  //         {
-  //           "content-type": "application/json",
-  //         },
-  //         (data) => {
-  //           if (data.req.status === 200) {
-  //             setLoading(false);
-  //             setAuthUserInfo([data.res]);
-  //             setError(null);
-  //             return;
-  //           }
-  //           setLoading(false);
-  //           setError(data.res);
-  //         }
-  //       );
-  //     } catch (err) {
-  //       setLoading(false);
-  //       setError(err);
-  //     }
-  //   }
-  //   getUserData();
-  // }, []);
+  function logout() {
+    localStorage.clear();
+    util.redirect("/signin", 100);
+  }
 
   return (
-    <DataContext.Provider value={{ authUserInfo, loading, error }}>
+    <DataContext.Provider value={{ logout }}>
       {props.children}
     </DataContext.Provider>
   );

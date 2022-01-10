@@ -81,7 +81,7 @@ function Profile() {
               loadingState={loading}
               localInfo={local}
             />
-            <UserTrips />
+            {/* <UserTrips /> */}
             <div className="space"></div>
           </>
         )}

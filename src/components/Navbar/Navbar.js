@@ -1,25 +1,44 @@
-import React,{useState} from 'react'
-import { Link } from 'react-router-dom'
-import "./style.css"
+import React, { useState, useContext } from "react";
+import { Link } from "react-router-dom";
+
+import DataContext from "../../context/DataContext";
+
+import "./style.css";
 
 function Navbar() {
-    const [show, setShow] = useState(false);
+  const { logout } = useContext(DataContext);
+  const [show, setShow] = useState(false);
 
-    return (
-        <>
-            <div className="navbar-cont">
-                <div className="logo">Logo</div>
-                <div className="right">
-                    <img src="https://avatars.dicebear.com/api/micah/ben.svg" alt="" onClick={()=>setShow(!show)} className="user-img img-fluid" />
-                    {show && <div className="more-info">
-                        <Link to="/profile/dfvdfvdfv">Home</Link>
-                        <Link to="/student/ride/fdvdfv">Request Ride</Link>
-                        <Link to="" className="logout">Logout</Link>
-                    </div>}
-                </div>
+  return (
+    <>
+      <div className="navbar-cont">
+        <div className="logo">Logo</div>
+        <div className="right">
+          <img
+            src="https://avatars.dicebear.com/api/micah/ben.svg"
+            alt=""
+            onClick={() => setShow(!show)}
+            className="user-img img-fluid"
+          />
+          {show && (
+            <div className="more-info">
+              <Link to="/profile/dfvdfvdfv">Home</Link>
+              <Link to="/student/ride/fdvdfv">Request Ride</Link>
+              <p
+                to=""
+                className="logout"
+                onClick={() => {
+                  logout();
+                }}
+              >
+                Logout
+              </p>
             </div>
-        </>
-    )
+          )}
+        </div>
+      </div>
+    </>
+  );
 }
 
-export default Navbar
+export default Navbar;

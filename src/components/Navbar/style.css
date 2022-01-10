@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  z-index:1000;
+  z-index: 1000;
 }
 
 .navbar-cont .right {
@@ -34,12 +34,15 @@
   z-index: 1000;
 }
 
-.navbar-cont .right .more-info a {
+.navbar-cont .right .more-info a,
+.navbar-cont .right .more-info p {
   padding: 10px;
   width: 100%;
   color: #ccc;
 }
-.navbar-cont .right .more-info a:hover {
+.navbar-cont .right .more-info a:hover,
+.navbar-cont .right .more-info p:hover {
   color: var(--text-w);
   background: var(--dark);
+  cursor: pointer;
 }
