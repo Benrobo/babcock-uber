@@ -23,7 +23,7 @@ export function DataContextProvider(props) {
   }
 
   return (
-    <DataContext.Provider value={{ logout }}>
+    <DataContext.Provider value={{ logout, locData }}>
       {props.children}
     </DataContext.Provider>
   );

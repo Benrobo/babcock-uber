@@ -6,8 +6,10 @@ import DataContext from "../../context/DataContext";
 import "./style.css";
 
 function Navbar() {
-  const { logout } = useContext(DataContext);
+  const { logout, locData } = useContext(DataContext);
   const [show, setShow] = useState(false);
+
+  const { id } = locData;
 
   return (
     <>
@@ -22,8 +24,8 @@ function Navbar() {
           />
           {show && (
             <div className="more-info">
-              <Link to="/profile/dfvdfvdfv">Home</Link>
-              <Link to="/student/ride/fdvdfv">Request Ride</Link>
+              <Link to={`/profile/${id}`}>Home</Link>
+              <Link to={`/student/ride/${id}`}>Request Ride</Link>
               <p
                 to=""
                 className="logout"

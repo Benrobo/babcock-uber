@@ -90,8 +90,7 @@ function Signup() {
       notif.success("account created sucessful");
       util.redirect("/signin", 1500);
     } catch (e) {
-      console.log(e);
-      // notif.error(e.message);
+      notif.error(e.message);
     }
   }
 

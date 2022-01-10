@@ -42,6 +42,31 @@ export class Util {
     return new Error(msg);
   }
 
+  isLoggedIn() {
+    let tokens = JSON.parse(localStorage.getItem("babcock-auth"));
+
+    if (!tokens || tokens.refreshToken === "" || tokens.accessToken === "") {
+      return false;
+    }
+
+    try {
+      // exp gives us date in miliseconds
+      let { exp } = jwt_decode(tokens.refreshToken);
+
+      // convert milliseconds -> seconds
+      let date = new Date().getTime() / 1000;
+
+      // check if exp date is < the present date
+      if (exp < date) {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+
+    return true;
+  }
+
   validatePhonenumber(phoneNumber) {
     if (!phoneNumber) return false;
     const regexp =
@@ -156,7 +181,7 @@ export class Util {
 
   getLocalstorageData() {
     if (localStorage.getItem("babcock-auth") === null) {
-      return  this.Error("babcock-auth notfound in localstorage..")
+      return this.Error("babcock-auth notfound in localstorage..");
     }
 
     // we dont just wanna send the, data from localstorage, instead we wanna send the user

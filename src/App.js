@@ -14,6 +14,10 @@ import Driver from "./pages/arrived/Driver";
 import { DataContextProvider } from "./context/DataContext";
 import Notfound from "./pages/notfound/Notfound";
 
+import { Util } from "./helpers/util";
+
+const util = new Util();
+
 function App() {
   return (
     // <div className="App">
@@ -22,13 +26,34 @@ function App() {
         <Router>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/signin" element={<Signin />} />
-            <Route path="/profile/:id" element={<Profile />} />
-            <Route path="/student/ride/:id" element={<Ride />} />
-            <Route path="/driver/request/:userId" element={<Request />} />
-            <Route path="/arrived/passenger/:id" element={<Passenger />} />
-            <Route path="/arrived/driver/:id" element={<Driver />} />
+            <Route
+              path="/signup"
+              element={util.isLoggedIn() === true ? <Home /> : <Signup />}
+            />
+            <Route
+              path="/signin"
+              element={util.isLoggedIn() === true ? <Home /> : <Signin />}
+            />
+            <Route
+              path="/profile/:id"
+              element={util.isLoggedIn() === true ? <Profile /> : <Signup />}
+            />
+            <Route
+              path="/student/ride/:id"
+              element={util.isLoggedIn() === true ? <Ride /> : <Signup />}
+            />
+            <Route
+              path="/driver/request/:userId"
+              element={util.isLoggedIn() === true ? <Request /> : <Signup />}
+            />
+            <Route
+              path="/arrived/passenger/:id"
+              element={util.isLoggedIn() === true ? <Passenger /> : <Signup />}
+            />
+            <Route
+              path="/arrived/driver/:id"
+              element={util.isLoggedIn() === true ? <Driver /> : <Signup />}
+            />
             <Route path="/notfound/:pageId" element={<Notfound />} />
             <Route path="*" element={<Notfound />} />
           </Routes>

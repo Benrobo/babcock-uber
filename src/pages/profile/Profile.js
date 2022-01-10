@@ -49,7 +49,6 @@ function Profile() {
       axios
         .post("http://localhost:5000/api/users", sendData)
         .then((res) => {
-          console.log(res.data);
           setLoading(false);
           setAuthUserInfo([res.data]);
         })
@@ -166,8 +165,6 @@ function StatReview() {
 
 function UserProfileDetails({ userInfo, loadingState, localInfo }) {
   const [edit, setEdit] = useState(false);
-
-  console.log(userInfo[0]);
 
   return (
     <div className="details-cont">
