@@ -156,9 +156,7 @@ export class Util {
 
   getLocalstorageData() {
     if (localStorage.getItem("babcock-auth") === null) {
-      return new Notification().error(
-        "babcock-auth notfound in localstorage.."
-      );
+      return  this.Error("babcock-auth notfound in localstorage..")
     }
 
     // we dont just wanna send the, data from localstorage, instead we wanna send the user

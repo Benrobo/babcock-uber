@@ -6,12 +6,12 @@ import { ArrowLeftIcon } from "@heroicons/react/solid";
 import { SuccessBtn } from "../../helpers/buttons";
 import "./style.css";
 
-import { Notification, Util, Http } from "../../helpers/util";
+import { Notification, Util } from "../../helpers/util";
+import axios from "axios";
 
 // instance
 const notif = new Notification(5000);
 const util = new Util();
-const http = new Http();
 
 function Signup() {
   const [tab, setTab] = useState("student");
@@ -71,25 +71,28 @@ function Signup() {
       userData["password"] = password;
     }
 
-    console.log(userData);
     const url = "http://localhost:5000/api/auth/register";
-    http.post(
-      url,
-      userData,
-      {
-        "content-type": "application/json",
-      },
-      (data) => {
-        const { req, res } = data;
 
-        if (req.status === 200) {
-          notif.success(res.msg);
-          util.redirect("/signin", 2000);
-          return;
-        }
-        notif.error(res.msg);
+    try {
+      let req = await fetch(url, {
+        method: "post",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+
+      let res = await req.json();
+
+      if (req.status !== 200 && res.msg) {
+        return notif.error(res.msg);
       }
-    );
+      notif.success("account created sucessful");
+      util.redirect("/signin", 1500);
+    } catch (e) {
+      console.log(e);
+      // notif.error(e.message);
+    }
   }
 
   return (

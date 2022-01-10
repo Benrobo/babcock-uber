@@ -18,43 +18,43 @@ export function DataContextProvider(props) {
   const locData = util.getLocalstorageData();
 
   // fetch data
-  useEffect(() => {
-    async function getUserData() {
-      setLoading(true);
-      const url = "http://localhost:5000/api/users";
-      const sendData = {
-        userId: locData.id,
-        role: locData.role,
-      };
+  // useEffect(() => {
+  //   async function getUserData() {
+  //     setLoading(true);
+  //     const url = "http://localhost:5000/api/users";
+  //     const sendData = {
+  //       userId: locData.id,
+  //       role: locData.role,
+  //     };
 
-      try {
-        await http.post(
-          url,
-          sendData,
-          {
-            "content-type": "application/json",
-          },
-          (data) => {
-            if (data.req.status === 200) {
-              setLoading(false);
-              setAuthUserInfo([data.res]);
-              setError(null);
-              return;
-            }
-            setLoading(false);
-            setError(data.res);
-          }
-        );
-      } catch (err) {
-        setLoading(false);
-        setError(err);
-      }
-    }
-    getUserData();
-  }, []);
+  //     try {
+  //       await http.post(
+  //         url,
+  //         sendData,
+  //         {
+  //           "content-type": "application/json",
+  //         },
+  //         (data) => {
+  //           if (data.req.status === 200) {
+  //             setLoading(false);
+  //             setAuthUserInfo([data.res]);
+  //             setError(null);
+  //             return;
+  //           }
+  //           setLoading(false);
+  //           setError(data.res);
+  //         }
+  //       );
+  //     } catch (err) {
+  //       setLoading(false);
+  //       setError(err);
+  //     }
+  //   }
+  //   getUserData();
+  // }, []);
 
   return (
-    <DataContext.Provider value={{ locData, authUserInfo, loading, error }}>
+    <DataContext.Provider value={{ authUserInfo, loading, error }}>
       {props.children}
     </DataContext.Provider>
   );

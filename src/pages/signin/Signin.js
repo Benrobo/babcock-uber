@@ -6,13 +6,13 @@ import { ArrowLeftIcon } from "@heroicons/react/solid";
 import { SuccessBtn } from "../../helpers/buttons";
 import "./style.css";
 
-import { Notification, Util, Http } from "../../helpers/util";
+import { Notification, Util } from "../../helpers/util";
 import { Notyf } from "notyf";
+import axios from "axios";
 
 // instance
 const notif = new Notification(5000);
 const util = new Util();
-const http = new Http();
 
 function Signin() {
   const [tab, setTab] = useState("student");
@@ -62,39 +62,38 @@ function Signin() {
     async function signinUser() {
       const url = "http://localhost:5000/api/auth/login";
       try {
-        const req = await fetch(url, {
+        let req = await fetch(url, {
           method: "post",
           headers: {
             "content-type": "application/json",
           },
           body: JSON.stringify(userData),
         });
-        const res = await req.json();
+        let res = await req.json();
 
-        if (req.status === 200) {
-          notif.success("Succesfully loggedIn");
-          // decode token
-          const { accessToken, refreshToken } = res;
-          if (
-            util.decodeJwt(refreshToken).error ||
-            util.decodeJwt(refreshToken).msg
-          ) {
-            notif.error(util.decodeJwt(refreshToken));
-            return Error(util.decodeJwt(refreshToken).msg);
-          }
-          const { id, role } = util.decodeJwt(refreshToken);
-          const saveuserInfo = {
-            id,
-            role,
-            accessToken,
-            refreshToken,
-          };
-          // save data to localstorage
-          util.saveLocalstorage(saveuserInfo);
-          util.redirect(`/profile/${id}`, 1500);
-          return;
+        if (req.status !== 200 && res.msg) {
+          return notif.error(res.msg);
         }
-        notif.error(res.msg);
+        notif.success("logged in sucessful");
+        const { accessToken, refreshToken } = res;
+        if (
+          util.decodeJwt(refreshToken).error ||
+          util.decodeJwt(refreshToken).msg
+        ) {
+          notif.error(util.decodeJwt(refreshToken));
+          return Error(util.decodeJwt(refreshToken).msg);
+        }
+        const { id, role } = util.decodeJwt(refreshToken);
+        const saveuserInfo = {
+          id,
+          role,
+          accessToken,
+          refreshToken,
+        };
+        // save data to localstorage
+        util.saveLocalstorage(saveuserInfo);
+        util.redirect(`/profile/${id}`, 1500);
+        return;
       } catch (e) {
         notif.error(e.message);
       }

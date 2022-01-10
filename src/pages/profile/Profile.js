@@ -6,13 +6,13 @@ import "./style.css";
 import { Link } from "react-router-dom";
 import mapImg from "../../assets/img/map-bg.png";
 import Head from "../../components/MainHead/Head";
-import { Util, Notification, Http } from "../../helpers/util";
+import { Util, Notification } from "../../helpers/util";
+import axios from "axios";
 
 import DataContext from "../../context/DataContext";
 
 const util = new Util();
 const notyf = new Notification();
-const http = new Http();
 const local = util.getLocalstorageData();
 
 // if an error is present when getting data from this util function
@@ -23,9 +23,10 @@ if (local.error) {
 }
 
 function Profile() {
-  const { error, authUserInfo, loading } = useContext(DataContext);
-
-  // check if the /profile/:id is valid
+  // const { error, authUserInfo, loading } = useContext(DataContext);
+  const [authUserInfo, setAuthUserInfo] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const params = useParams();
   const local = util.getLocalstorageData();
 
@@ -35,8 +36,32 @@ function Profile() {
     local === undefined ||
     local === null
   ) {
-    return util.redirect("/notfound/" + params.id, 0);
+    util.redirect("/notfound/" + params.id, 0);
   }
+
+  const sendData = {
+    userId: local.id,
+    role: local.role,
+  };
+
+  useEffect(() => {
+    try {
+      axios
+        .post("http://localhost:5000/api/users", sendData)
+        .then((res) => {
+          console.log(res.data);
+          setLoading(false);
+          setAuthUserInfo([res.data]);
+        })
+        .catch((err) => {
+          setLoading(false);
+          setError(err.message);
+        });
+    } catch (err) {
+      setLoading(false);
+      setError("Something went wrong fetching users data.: " + err.message);
+    }
+  }, []);
 
   return (
     <>
@@ -56,7 +81,7 @@ function Profile() {
               loadingState={loading}
               localInfo={local}
             />
-            {/* <UserTrips /> */}
+            <UserTrips />
             <div className="space"></div>
           </>
         )}
