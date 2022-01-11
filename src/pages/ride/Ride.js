@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import Head from "../../components/MainHead/Head";
 import {
@@ -232,8 +232,7 @@ function DriverRidePage() {
   const [role, setRole] = useState("");
   const [userimg, setImg] = useState("");
   const [userId, setUserId] = useState("");
-
-  const maxTime = 20;
+  const [usertime, setTime] = useState();
 
   // listen for socket event
   socket.on("users-request", (data) => {
@@ -255,11 +254,33 @@ function DriverRidePage() {
       ) : (
         <div className="m-3 p-2">
           <p>Driver Page</p>
-          <h5>Student Request would show here.</h5>
+          <h5>
+            Student Request would show here. <Timer sec={20} />
+          </h5>
         </div>
       )}
     </>
   );
+}
+
+function Timer({ sec }) {
+  let [seconds, setSeconds] = useState(sec);
+  useEffect(() => {
+    let myInterval = setInterval(() => {
+      if (seconds > 0) {
+        setSeconds(seconds--);
+      }
+      console.log(seconds);
+      if (seconds === 0) {
+        setSeconds(0);
+      }
+    }, 1000);
+    return () => {
+      clearInterval(myInterval);
+    };
+  });
+
+  return <div>{seconds === 0 ? null : <h1> {seconds}</h1>}</div>;
 }
 
 function Suggestions({

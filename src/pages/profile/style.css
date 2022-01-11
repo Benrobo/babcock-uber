@@ -36,6 +36,11 @@
 .profile-cont .user-info-head img {
   width: 5vmax;
 }
+.profile-cont .user-info-head .user-icon {
+  width: 80px;
+  font-size: 20px;
+  padding: 10px;
+}
 .profile-cont .user-info-head .info .m-info span {
   color: #777;
 }
@@ -119,7 +124,7 @@
   border: 2px solid var(--text-g);
 }
 
-.space{
+.space {
   width: 100%;
   height: 120px;
 }

@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import mapImg from "../../assets/img/map-bg.png";
 import Head from "../../components/MainHead/Head";
 import { Util, Notification } from "../../helpers/util";
+import { UserIcon } from "@heroicons/react/solid";
 import axios from "axios";
 
 import DataContext from "../../context/DataContext";
@@ -102,11 +103,15 @@ function UserInfoHead({ userInfo, loadingState }) {
   ) : (
     <>
       <div className="user-info-head">
-        <img
-          src={userInfo[0] === undefined ? "" : userInfo[0].profilePics}
-          alt={"img"}
-          className="user-img img-fluid mr-4"
-        />
+        {navigator.onLine ? (
+          <img
+            src={userInfo[0] === undefined ? "" : userInfo[0].profilePics}
+            alt={"img"}
+            className="user-img img-fluid mr-4"
+          />
+        ) : (
+          <UserIcon className="user-icon" />
+        )}
         <div className="info">
           <h3>{userInfo[0] === undefined ? "" : userInfo[0].name}</h3>
           <div className="m-info">

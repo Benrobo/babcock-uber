@@ -10,14 +10,11 @@ import Navbar from "../../components/Navbar/Navbar";
 import axios from "axios";
 import { Util, Notification } from "../../helpers/util";
 import socket from "../../sockets";
-
+import Timer from "../../components/Timer/Timer";
 const util = new Util();
 const notif = new Notification();
 
 function Request({ from, to, image }) {
-  const maxTime = 20;
-  const endTime = 0;
-
   return (
     <>
       <div className="request-cont">
@@ -34,7 +31,7 @@ function Request({ from, to, image }) {
           <img src={image} alt="" className="img-fluid" />
           <br />
           <br />
-          <div className="timer-cont">11:05</div>
+          <Timer sec={20} />
           <br />
           <div className="actions-btn">
             <button className="accept btn">Accept</button>
