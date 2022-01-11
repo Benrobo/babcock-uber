@@ -11,11 +11,11 @@ import { SuccessBtn } from "../../helpers/buttons";
 import Modal from "../../components/Modal/Modal";
 import { ArrowLeftIcon } from "@heroicons/react/solid";
 import { Link, useParams } from "react-router-dom";
-import { Socket } from "../../sockets";
 import cabImg from "../../assets/img/driver.png";
-
-import { io } from "socket.io-client";
+import axios from "axios";
 import { Util, Notification } from "../../helpers/util";
+import Request from "../request/Request";
+import socket from "../../sockets";
 
 const util = new Util();
 const notif = new Notification();
@@ -103,11 +103,6 @@ function StudentRideRequestForm() {
     util.redirect("/notfound/" + params.id, 0);
   }
 
-  // Handle all socket connection here
-  const socket = new Socket(io);
-  //listen for any connection from backend
-  socket.initMain();
-
   function handleGetRide() {
     if (drop === "" || pickup === "") {
       return notif.error("Fields cant be empty");
@@ -116,8 +111,20 @@ function StudentRideRequestForm() {
     setLoading(true);
 
     // handle ride request
-    socket.handleRideRequestPost(pickup, drop, local.id, local.role);
+    let sendData = {
+      from: pickup,
+      to: drop,
+      userId: local.id,
+      role: local.role,
+    };
+
+    socket.emit("student_ride_request", sendData);
   }
+
+  // listen for socket event
+  socket.on("available-driver", (data) => {
+    console.log(data);
+  });
 
   function searchLocations(text) {
     if (checkAction === "pickup") setPickupSuggestHide(true);
@@ -216,9 +223,41 @@ function StudentRideRequestForm() {
 }
 
 function DriverRidePage() {
+  const [loading, setLoading] = useState(false);
+  const [request, setReqest] = useState(false);
+  const [error, setError] = useState("");
+  const [studentInfo, setStudentId] = useState("");
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
+  const [role, setRole] = useState("");
+  const [userimg, setImg] = useState("");
+  const [userId, setUserId] = useState("");
+
+  const maxTime = 20;
+
+  // listen for socket event
+  socket.on("users-request", (data) => {
+    if (data) {
+      console.log(data);
+      const { from, to } = data.clientData;
+      const { img } = data.user;
+      setReqest(true);
+      setFrom(from);
+      setTo(to);
+      setImg(img);
+    }
+  });
+
   return (
     <>
-      <h1>Just A Driver</h1>
+      {request === true ? (
+        <Request from={from} to={to} image={userimg} />
+      ) : (
+        <div className="m-3 p-2">
+          <p>Driver Page</p>
+          <h5>Student Request would show here.</h5>
+        </div>
+      )}
     </>
   );
 }
