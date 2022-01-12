@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { UserIcon } from "@heroicons/react/solid";
 import DataContext from "../../context/DataContext";
+import socket from "../../sockets";
 
 import "./style.css";
 
@@ -10,8 +11,6 @@ function Navbar() {
   const [show, setShow] = useState(false);
 
   const { id, role } = locData;
-
-  console.log(locData);
 
   return (
     <>
@@ -33,7 +32,7 @@ function Navbar() {
             <div className="more-info">
               <Link to={`/profile/${id}`}>Home</Link>
               <Link to={`/users/ride/${id}`}>
-                {role === "student" ? "Request Ride" : "Rides Request"}
+                {role === "student" ? "Request Ride" : ""}
               </Link>
               <p
                 to=""

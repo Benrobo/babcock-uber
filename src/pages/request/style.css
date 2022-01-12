@@ -3,9 +3,8 @@
   max-width: 450px;
   margin: 10px auto;
   position: relative;
-  height: 100vh;
+  height: auto;
   padding: 12px;
-  overflow-y: auto;
   margin-bottom: 30px;
 }
 
@@ -34,7 +33,6 @@
   width: 10vmax;
   border-radius: 50%;
   background: var(--dark-m);
-
 }
 
 .request-cont .request-info .timer-cont {

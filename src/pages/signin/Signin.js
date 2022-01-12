@@ -169,7 +169,7 @@ function Signin() {
               }}
             />
             <SuccessBtn
-              text="Create Account"
+              text="Signin"
               onClick={handleClick}
               className={"btn-block"}
             />

@@ -45,18 +45,19 @@ function Home() {
             <br />
             {/* <img src={image} alt="" className="img-fluid car" /> */}
             <div className="action-btn">
-              <SuccessBtn
-                onClick={() => setIsopen(!isOpen)}
-                text="Get Started"
-                className="mt-2 mr-2"
-              />
-              {util.isLoggedIn() && (
+              {util.isLoggedIn() ? (
                 <SuccessBtn
                   onClick={() => {
                     util.redirect(`/profile/${locData.id}`, 0);
                   }}
                   text="profile"
                   className="mt-2 ml-2"
+                />
+              ) : (
+                <SuccessBtn
+                  onClick={() => setIsopen(!isOpen)}
+                  text="Get Started"
+                  className="mt-2 mr-2"
                 />
               )}
             </div>

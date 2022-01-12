@@ -71,11 +71,7 @@ function Ride() {
     <>
       <Navbar />
 
-      {local.role === "student" ? (
-        <StudentRideRequestForm />
-      ) : (
-        <DriverRidePage />
-      )}
+      {local.role === "student" && <StudentRideRequestForm />}
     </>
   );
 }
@@ -220,67 +216,6 @@ function StudentRideRequestForm() {
       </div>
     </div>
   );
-}
-
-function DriverRidePage() {
-  const [loading, setLoading] = useState(false);
-  const [request, setReqest] = useState(false);
-  const [error, setError] = useState("");
-  const [studentInfo, setStudentId] = useState("");
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
-  const [role, setRole] = useState("");
-  const [userimg, setImg] = useState("");
-  const [userId, setUserId] = useState("");
-  const [usertime, setTime] = useState();
-
-  // listen for socket event
-  socket.on("users-request", (data) => {
-    if (data) {
-      console.log(data);
-      const { from, to } = data.clientData;
-      const { img } = data.user;
-      setReqest(true);
-      setFrom(from);
-      setTo(to);
-      setImg(img);
-    }
-  });
-
-  return (
-    <>
-      {request === true ? (
-        <Request from={from} to={to} image={userimg} />
-      ) : (
-        <div className="m-3 p-2">
-          <p>Driver Page</p>
-          <h5>
-            Student Request would show here. <Timer sec={20} />
-          </h5>
-        </div>
-      )}
-    </>
-  );
-}
-
-function Timer({ sec }) {
-  let [seconds, setSeconds] = useState(sec);
-  useEffect(() => {
-    let myInterval = setInterval(() => {
-      if (seconds > 0) {
-        setSeconds(seconds--);
-      }
-      console.log(seconds);
-      if (seconds === 0) {
-        setSeconds(0);
-      }
-    }, 1000);
-    return () => {
-      clearInterval(myInterval);
-    };
-  });
-
-  return <div>{seconds === 0 ? null : <h1> {seconds}</h1>}</div>;
 }
 
 function Suggestions({

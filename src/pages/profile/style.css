@@ -206,3 +206,19 @@
     width:100%;
   }
 } */
+
+/* request modal */
+
+.request-modal {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: rgba(0, 0, 0, 0.9);
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 1000;
+}

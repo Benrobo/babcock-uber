@@ -15,6 +15,18 @@ const util = new Util();
 const notif = new Notification();
 
 function Request({ from, to, image }) {
+  let local = util.getLocalstorageData();
+
+  function cancelRequest() {
+    console.log(local);
+    // socket.emit("ride-cancel", data)
+  }
+
+  function acceptRequest() {
+    console.log(local);
+    // socket.emit("ride-cancel", data)
+  }
+
   return (
     <>
       <div className="request-cont">
@@ -31,11 +43,16 @@ function Request({ from, to, image }) {
           <img src={image} alt="" className="img-fluid" />
           <br />
           <br />
+          <br />
           <Timer sec={20} />
           <br />
           <div className="actions-btn">
-            <button className="accept btn">Accept</button>
-            <button className="reject btn">Reject</button>
+            <button className="accept btn" onClick={acceptRequest}>
+              Accept
+            </button>
+            <button className="reject btn" onClick={cancelRequest}>
+              Reject
+            </button>
           </div>
         </div>
         <br />

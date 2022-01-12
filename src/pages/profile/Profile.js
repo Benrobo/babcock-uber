@@ -9,8 +9,9 @@ import Head from "../../components/MainHead/Head";
 import { Util, Notification } from "../../helpers/util";
 import { UserIcon } from "@heroicons/react/solid";
 import axios from "axios";
-
 import DataContext from "../../context/DataContext";
+import socket from "../../sockets";
+import Request from "../request/Request";
 
 const util = new Util();
 const notyf = new Notification();
@@ -28,6 +29,11 @@ function Profile() {
   const [authUserInfo, setAuthUserInfo] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [request, setReqest] = useState(false);
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
+  const [status, setStatus] = useState(false);
+  const [userimg, setImg] = useState("");
   const params = useParams();
   const local = util.getLocalstorageData();
 
@@ -39,6 +45,25 @@ function Profile() {
   ) {
     util.redirect("/notfound/" + params.id, 0);
   }
+
+  // listen for socket event
+  // as long as the driver status is online, then recieve the socket request
+
+  useEffect(() => {
+    if (status) {
+      socket.on("users-request", (data) => {
+        if (data) {
+          const { from, to } = data.clientData;
+          const { img } = data.user;
+          setReqest(true);
+          setFrom(from);
+          setTo(to);
+          setImg(img);
+        }
+      });
+    }
+    console.log(status);
+  }, [status, setStatus]);
 
   const sendData = {
     userId: local.id,
@@ -74,13 +99,23 @@ function Profile() {
         ) : (
           <>
             <Head text="Profile" />
-            <UserInfoHead userInfo={authUserInfo} loadingState={loading} />
+            <UserInfoHead
+              userInfo={authUserInfo}
+              loadingState={loading}
+              status={status}
+              setStatus={setStatus}
+            />
             <StatReview />
             <UserProfileDetails
               userInfo={authUserInfo}
               loadingState={loading}
               localInfo={local}
             />
+            {request && (
+              <div className="request-modal">
+                <Request from={from} to={to} image={userimg} />
+              </div>
+            )}
             {/* <UserTrips /> */}
             <div className="space"></div>
           </>
@@ -92,10 +127,7 @@ function Profile() {
 
 // top head container
 
-function UserInfoHead({ userInfo, loadingState }) {
-  const [switchVal, setSwitchVal] = useState(0);
-  const [switchState, setSwitchState] = useState(true);
-
+function UserInfoHead({ userInfo, loadingState, status, setStatus }) {
   const local = util.getLocalstorageData();
 
   return loadingState === true ? (
@@ -122,8 +154,10 @@ function UserInfoHead({ userInfo, loadingState }) {
                 <>
                   <span className="mr-2">Driver</span>
                   <Switch
-                    value={switchState ? 1 : 0}
-                    onChange={(e) => setSwitchState(!switchState)}
+                    value={status ? 1 : 0}
+                    onChange={(e) => {
+                      setStatus(!status);
+                    }}
                     styles={{
                       track: {
                         backgroundColor: "#777",
