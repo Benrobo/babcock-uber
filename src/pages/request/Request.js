@@ -14,7 +14,15 @@ import Timer from "../../components/Timer/Timer";
 const util = new Util();
 const notif = new Notification();
 
-function Request({ from, to, image, socketId, cancelRequest, setReqest }) {
+function Request({
+  from,
+  to,
+  image,
+  socketId,
+  cancelRequest,
+  acceptRequest,
+  setReqest,
+}) {
   let local = util.getLocalstorageData();
 
   return (
@@ -40,7 +48,7 @@ function Request({ from, to, image, socketId, cancelRequest, setReqest }) {
             <button
               className="accept btn"
               onClick={() => {
-                cancelRequest();
+                acceptRequest();
               }}
             >
               Accept

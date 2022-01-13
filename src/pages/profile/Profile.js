@@ -12,9 +12,10 @@ import axios from "axios";
 import DataContext from "../../context/DataContext";
 import socket from "../../sockets";
 import Request from "../request/Request";
+import Student from "../arrived/Student";
 
 const util = new Util();
-const notyf = new Notification();
+const notif = new Notification(3000);
 const local = util.getLocalstorageData();
 
 // if an error is present when getting data from this util function
@@ -35,6 +36,10 @@ function Profile() {
   const [status, setStatus] = useState(false);
   const [userimg, setImg] = useState("");
   const [socketid, setSocketId] = useState("");
+  const [incomingStudentId, setIncomingStudentId] = useState("");
+  const [incomingStudentRole, setIncomingStudentRole] = useState("");
+  const [showstudentcard, setStudentCard] = useState(false);
+  const [studentMainDetails, setStudentMainDetails] = useState([]);
   const params = useParams();
   const local = util.getLocalstorageData();
 
@@ -47,6 +52,9 @@ function Profile() {
     util.redirect("/notfound/" + params.id, 0);
   }
 
+  // get current socketid
+  let currentSocketid = JSON.parse(localStorage.getItem("socket"));
+
   // listen for socket event
   // as long as the driver status is online, then recieve the socket request
 
@@ -54,13 +62,16 @@ function Profile() {
     if (status) {
       socket.on("users-request", (data) => {
         if (data) {
+          console.log(data);
           const { from, to, socketId } = data.clientData;
-          const { img } = data.user;
+          const { img, id, role } = data.user;
           setReqest(true);
           setFrom(from);
           setTo(to);
           setImg(img);
           setSocketId(socketId);
+          setIncomingStudentId(id);
+          setIncomingStudentRole(role);
         }
       });
     }
@@ -95,10 +106,46 @@ function Profile() {
     setReqest(false);
   }
 
-  function acceptRequest() {
-    console.log(local);
+  async function acceptRequest() {
+    socket.emit("ride-accepted", {
+      studentSocketId: socketid,
+      driverSocketId: currentSocketid.socketid,
+      studentId: incomingStudentId,
+      driverId: local.id,
+      driverRole: local.role,
+    });
+    setReqest(false);
+    setStudentCard(true);
 
-    // socket.emit("ride-cancel", data)
+    // fetch student data
+    try {
+      setLoading(true);
+      let url = "http://localhost:5000/api/users";
+      let req = await fetch(url, {
+        method: "post",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: incomingStudentId,
+          role: incomingStudentRole,
+        }),
+      });
+      let res = await req.json();
+      console.log(res);
+      if (req.status === 200 || req.status === 201) {
+        setStudentMainDetails([res]);
+        return;
+      }
+
+      setLoading(false);
+      setStudentCard(false);
+      notif.error(`accepting ride failed: ${res.msg}`);
+    } catch (err) {
+      setLoading(false);
+      setStudentCard(false);
+      notif.error(err.message);
+    }
   }
 
   return (
@@ -132,11 +179,21 @@ function Profile() {
                   image={userimg}
                   socketId={socketid}
                   cancelRequest={cancelRequest}
+                  acceptRequest={acceptRequest}
                   setReqest={setReqest}
+                  driverInfo={authUserInfo}
                 />
               </div>
             )}
             {/* <UserTrips /> */}
+            {showstudentcard && (
+              <div className="student-modal">
+                <Student
+                  studentDetails={studentMainDetails}
+                  droplocation={to}
+                />
+              </div>
+            )}
             <div className="space"></div>
           </>
         )}

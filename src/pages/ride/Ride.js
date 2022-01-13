@@ -148,7 +148,6 @@ function StudentRideRequestForm({ driverDetail }) {
     if (drop === "" || pickup === "") {
       return notif.error("Fields cant be empty");
     }
-    // setGetrideData(locationData);
     setLoading(true);
 
     // get client socket ID
@@ -189,6 +188,12 @@ function StudentRideRequestForm({ driverDetail }) {
     if (data) {
       setCancelRideMsg(data.msg);
       setLoading(false);
+    }
+  });
+
+  socket.on("ride-accepted", (data) => {
+    if (data) {
+      console.log(data);
     }
   });
 
@@ -285,9 +290,13 @@ function StudentRideRequestForm({ driverDetail }) {
         />
       </div>
       {/* driver modal */}
-      <div className="driver-modal">
-        <Driver driverDetail={driverDetail !== undefined ? driverDetail : ""} />
-      </div>
+      {true && (
+        <div className="driver-modal">
+          <Driver
+            driverDetail={driverDetail !== undefined ? driverDetail : ""}
+          />
+        </div>
+      )}
     </div>
   );
 }
