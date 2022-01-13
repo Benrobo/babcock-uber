@@ -43,11 +43,7 @@ function App() {
               element={util.isLoggedIn() === true ? <Ride /> : <Signup />}
             />
             <Route
-              path="/driver/request/:userId"
-              element={util.isLoggedIn() === true ? <Request /> : <Signup />}
-            />
-            <Route
-              path="/arrived/passenger/:id"
+              path="/arrived/students/:id"
               element={util.isLoggedIn() === true ? <Passenger /> : <Signup />}
             />
             <Route

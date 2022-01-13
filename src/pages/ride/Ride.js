@@ -12,11 +12,10 @@ import Modal from "../../components/Modal/Modal";
 import { ArrowLeftIcon } from "@heroicons/react/solid";
 import { Link, useParams } from "react-router-dom";
 import cabImg from "../../assets/img/driver.png";
-import axios from "axios";
 import { Util, Notification } from "../../helpers/util";
-import Request from "../request/Request";
 import socket from "../../sockets";
-
+import Driver from "../arrived/Driver";
+import axios from "axios";
 const util = new Util();
 const notif = new Notification();
 
@@ -57,26 +56,68 @@ let locations = [
 function Ride() {
   let params = useParams();
   const local = util.getLocalstorageData();
+  const [driverInfo, setDriverInfo] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   if (
     params.id !== local.id ||
     !local ||
     local === undefined ||
-    local === null
+    local === null ||
+    local.role !== "student"
   ) {
     util.redirect("/notfound/" + params.id, 0);
   }
+
+  useEffect(() => {
+    async function getDriverDetails() {
+      try {
+        setLoading(true);
+        const url = "http://localhost:5000/api/users";
+        let req = await fetch(url, {
+          method: "post",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({ userId: local.id, role: local.role }),
+        });
+
+        let res = await req.json();
+
+        if (req.status === 200 || req.status === 201) {
+          setLoading(false);
+          setDriverInfo([res]);
+          setError(null);
+          console.log(res);
+          return;
+        }
+        setLoading(false);
+        setDriverInfo(null);
+        setError(res.msg);
+        notif.error(res.msg);
+      } catch (err) {
+        notif.error(err.message);
+        setLoading(false);
+        setDriverInfo(null);
+        setError(err.message);
+      }
+    }
+    getDriverDetails();
+  }, []);
 
   return (
     <>
       <Navbar />
 
-      {local.role === "student" && <StudentRideRequestForm />}
+      {local.role === "student" && (
+        <StudentRideRequestForm driverDetail={driverInfo} />
+      )}
     </>
   );
 }
 
-function StudentRideRequestForm() {
+function StudentRideRequestForm({ driverDetail }) {
   const [pickup, setPickup] = useState("");
   const [drop, setDrop] = useState("");
   const [suggestPickupHide, setPickupSuggestHide] = useState(false);
@@ -88,6 +129,8 @@ function StudentRideRequestForm() {
   const [getridedata, setGetrideData] = useState(null);
   // const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  console.log(driverDetail);
 
   let params = useParams();
   const local = util.getLocalstorageData();
@@ -240,6 +283,10 @@ function StudentRideRequestForm() {
           className="btn submit-btn"
           onClick={handleGetRide}
         />
+      </div>
+      {/* driver modal */}
+      <div className="driver-modal">
+        <Driver driverDetail={driverDetail !== undefined ? driverDetail : ""} />
       </div>
     </div>
   );

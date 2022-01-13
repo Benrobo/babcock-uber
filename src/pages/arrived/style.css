@@ -1,122 +1,118 @@
-.driver-ride-cont{
-    width: 100%;
-    display: flex;
-    align-items: center;
-    /* justify-content: center; */
-    flex-direction: column;
-    height: 100vh;
-    margin: 0px auto;
-    position: relative;
+.driver-ride-cont {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+  flex-direction: column;
+  height: 100vh;
+  margin: 0px auto;
+  position: relative;
 }
 
-.ride-status{
-    position: absolute;
-    bottom: 100px;
-    background: var(--dark-m);
-    color: #ccc;
-    border: 2px solid var(--text-g);
+.ride-status {
+  position: absolute;
+  bottom: 100px;
 }
 
-
-.details-box{
-    width:95vmin;
-    height: 250px;
-    background: var(--dark-m);
-    position: relative;
-    top: 100px;
-    margin: 10px auto;
-    border-radius: 5px;
-    overflow: hidden;
-    max-width: 400px;
-    box-shadow: 0px 0px 10px var(--dark-m);
+.details-box {
+  width: 95vmin;
+  height: 250px;
+  background: var(--dark-m);
+  position: relative;
+  top: 100px;
+  margin: 10px auto;
+  border-radius: 5px;
+  overflow: hidden;
+  max-width: 400px;
+  box-shadow: 0px 0px 10px var(--dark-m);
 }
 
-.details-box .icon{
-    padding: 5px;
-    width: 30px;
+.details-box .icon {
+  padding: 5px;
+  width: 30px;
 }
 
-.details-box .top-cont{
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 10px;
+.details-box .top-cont {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 10px;
 }
 
-.details-box .top-cont img{
-    width: 10vmax;
-    border-radius: 50%;
-    background: var(--dark);
+.details-box .top-cont img {
+  width: 10vmax;
+  border-radius: 50%;
+  background: var(--dark);
 }
 
-.details-box .top-cont .info{
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-    flex-direction: column;
-    position: relative;
-    left: 20px;
-    padding: 10px;
-    text-align: left;
+.details-box .top-cont .info {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  position: relative;
+  left: 20px;
+  padding: 10px;
+  text-align: left;
 }
-.details-box .top-cont .info .trips-count{
-    display:flex;
-    align-items: center;
-    justify-content: flex-start;
+.details-box .top-cont .info .trips-count {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 }
-.details-box .top-cont .info .trips-count .icon{
-    color: #ffff00;
-}
-
-.details-box .top-cont .info .trips-count small{
-    padding: 10px;
+.details-box .top-cont .info .trips-count .icon {
+  color: #ffff00;
 }
 
-.details-box .top-cont .info .location-info p{
-    color: #ccc;
+.details-box .top-cont .info .trips-count small {
+  padding: 10px;
 }
 
-.details-box .bottom-cont{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    position: absolute;
-    bottom: 0px;
-}
-.details-box .bottom-cont .bx{
-    flex-grow: 1;
-    padding: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    cursor: pointer;
+.details-box .top-cont .info .location-info p {
+  color: #ccc;
 }
 
-.details-box .bottom-cont .bx .icon{
-    padding: 10px;
-    width: 40px;
+.details-box .bottom-cont {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: absolute;
+  bottom: 0px;
+}
+.details-box .bottom-cont .bx {
+  flex-grow: 1;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
 }
 
-.details-box .bottom-cont .left{
-    background: var(--text-g);
-    color: var(--dark);
+.details-box .bottom-cont .bx .icon {
+  padding: 10px;
+  width: 40px;
 }
 
-.details-box .bottom-cont .right{
-    background:red;
+.details-box .bottom-cont .left {
+  background: var(--text-g);
+  color: var(--dark);
 }
 
-.details-box .bottom-cont .counter-cont{
-    background: var(--dark);
-    padding: 10px;
-}
-.details-box .bottom-cont .counter-cont span{
-    padding: 10px;
+.details-box .bottom-cont .right {
+  background: red;
 }
 
-.details-box .bottom-cont .bx:hover{
-    opacity: .9;
+.details-box .bottom-cont .counter-cont {
+  background: var(--dark);
+  padding: 10px;
+}
+.details-box .bottom-cont .counter-cont span {
+  padding: 10px;
+}
+
+.details-box .bottom-cont .bx:hover {
+  opacity: 0.9;
 }
