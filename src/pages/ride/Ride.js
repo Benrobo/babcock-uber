@@ -89,7 +89,6 @@ function Ride() {
           setLoading(false);
           setDriverInfo([res]);
           setError(null);
-          console.log(res);
           return;
         }
         setLoading(false);
@@ -127,10 +126,10 @@ function StudentRideRequestForm({ driverDetail }) {
   const [cancelridemsg, setCancelRideMsg] = useState("");
   const [rideStatus, setRideStatus] = useState(false);
   const [getridedata, setGetrideData] = useState(null);
-  // const [showModal, setShowModal] = useState(false);
+  const [driverDetails, setDriverDetails] = useState(null);
+  const [incomingDriverDetails, setIncomingDriverDetails] = useState("");
+  const [rideloading, setRideLoading] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  console.log(driverDetail);
 
   let params = useParams();
   const local = util.getLocalstorageData();
@@ -187,12 +186,28 @@ function StudentRideRequestForm({ driverDetail }) {
   socket.on("ride-cancel", (data) => {
     if (data) {
       setCancelRideMsg(data.msg);
-      setLoading(false);
+      setRideLoading(false);
     }
   });
 
+  // useEffect(() => {
+  //   socket.on("ride-accepted", (data) => {
+  //     if (data) {
+  //       const { driverId, driverRole } = data;
+  //       setIncomingDriverDetails({ driverId, driverRole });
+  //       setLoading(false);
+  //       setRideLoading(true);
+  //     }
+  //   });
+  //   console.log(incomingDriverDetails);
+  // }, [incomingDriverDetails, setIncomingDriverDetails]);
+
   socket.on("ride-accepted", (data) => {
     if (data) {
+      const { driverId, driverRole, driverSocketId } = data;
+      setIncomingDriverDetails({ driverId, driverRole });
+      setLoading(false);
+      setRideLoading(true);
       console.log(data);
     }
   });
@@ -290,11 +305,9 @@ function StudentRideRequestForm({ driverDetail }) {
         />
       </div>
       {/* driver modal */}
-      {true && (
+      {rideloading && (
         <div className="driver-modal">
-          <Driver
-            driverDetail={driverDetail !== undefined ? driverDetail : ""}
-          />
+          <Driver driverDetail={incomingDriverDetails} />
         </div>
       )}
     </div>

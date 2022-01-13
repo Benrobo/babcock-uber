@@ -4,25 +4,31 @@ import { StarIcon, PhoneIcon, XCircleIcon } from "@heroicons/react/solid";
 
 import "./style.css";
 
-function Driver() {
+function Driver({ driverDetails }) {
+  console.log(driverDetails);
+  if (driverDetails === undefined) {
+    // window.location.reload();
+  }
   return (
     <div>
-      <DriverDetailsBox />
+      <DriverDetailsBox driverDetails={driverDetails} />
     </div>
   );
 }
 
-function DriverDetailsBox() {
+function DriverDetailsBox({ driverDetails }) {
   return (
     <div className="details-box">
       <div className="top-cont">
         <img
-          src="https://avatars.dicebear.com/api/micah/ben.svg"
+          src={"https://avatars.dicebear.com/api/micah/ben.svg"}
           alt=""
           className="img-fluid"
         />
         <div className="info">
-          <p className="name">John Doe</p>
+          <p className="name">
+            {driverDetails === undefined ? "Undefined" : driverDetails.name}
+          </p>
           <span className="trips-count">
             <small>Trips </small>
             120 <StarIcon className="icon" />

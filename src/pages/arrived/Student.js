@@ -4,15 +4,18 @@ import { StarIcon, PhoneIcon, XCircleIcon } from "@heroicons/react/solid";
 import "./style.css";
 import { Link } from "react-router-dom";
 
-function Student({ studentDetails }) {
+function Student({ studentDetails, droplocation }) {
   return (
     <div>
-      <DriverDetailsBox studentDetails={studentDetails} />
+      <DriverDetailsBox
+        studentDetails={studentDetails}
+        droplocation={droplocation}
+      />
     </div>
   );
 }
 
-function DriverDetailsBox({ studentDetails }) {
+function DriverDetailsBox({ studentDetails, droplocation }) {
   console.log(studentDetails);
   return (
     <>
@@ -28,7 +31,7 @@ function DriverDetailsBox({ studentDetails }) {
                       <p className="name">{data.name}</p>
                       <div className="location-info">
                         <small>Drop Location</small>
-                        <p>Austin texas</p>
+                        <p>{droplocation}</p>
                       </div>
                     </div>
                   </div>

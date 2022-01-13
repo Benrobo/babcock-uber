@@ -135,6 +135,7 @@ function Profile() {
       console.log(res);
       if (req.status === 200 || req.status === 201) {
         setStudentMainDetails([res]);
+        setLoading(false);
         return;
       }
 
