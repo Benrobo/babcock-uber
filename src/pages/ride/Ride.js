@@ -83,6 +83,8 @@ function StudentRideRequestForm() {
   const [suggestDropHide, setDropSuggestHide] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
   const [checkAction, setAction] = useState("");
+  const [cancelridemsg, setCancelRideMsg] = useState("");
+  const [rideStatus, setRideStatus] = useState(false);
   const [getridedata, setGetrideData] = useState(null);
   // const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -106,20 +108,45 @@ function StudentRideRequestForm() {
     // setGetrideData(locationData);
     setLoading(true);
 
+    // get client socket ID
+    if (
+      localStorage.getItem("socket") === null ||
+      localStorage.getItem("socket") === undefined
+    ) {
+      // refresh page and get new socketId
+      window.location.reload(0);
+    }
+
+    let { socketId } = JSON.parse(localStorage.getItem("socket"));
+
     // handle ride request
     let sendData = {
       from: pickup,
       to: drop,
       userId: local.id,
       role: local.role,
+      socketId,
     };
 
     socket.emit("student_ride_request", sendData);
   }
 
+  useEffect(() => {
+    if (cancelridemsg !== "") {
+      notif.error(cancelridemsg);
+    }
+    setTimeout(() => {
+      setCancelRideMsg("");
+    }, 2000);
+  }, [cancelridemsg]);
+
   // listen for socket event
-  socket.on("available-driver", (data) => {
-    console.log(data);
+  // listen for cancel ride event.
+  socket.on("ride-cancel", (data) => {
+    if (data) {
+      setCancelRideMsg(data.msg);
+      setLoading(false);
+    }
   });
 
   function searchLocations(text) {
@@ -202,7 +229,7 @@ function StudentRideRequestForm() {
                 onClick={() => {
                   setLoading(false);
                   setGetrideData(null);
-                  notif.error("ride was cancel");
+                  notif.error("ride request canceled");
                 }}
               />
             </div>

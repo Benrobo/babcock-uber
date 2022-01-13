@@ -14,18 +14,8 @@ import Timer from "../../components/Timer/Timer";
 const util = new Util();
 const notif = new Notification();
 
-function Request({ from, to, image }) {
+function Request({ from, to, image, socketId, cancelRequest, setReqest }) {
   let local = util.getLocalstorageData();
-
-  function cancelRequest() {
-    console.log(local);
-    // socket.emit("ride-cancel", data)
-  }
-
-  function acceptRequest() {
-    console.log(local);
-    // socket.emit("ride-cancel", data)
-  }
 
   return (
     <>
@@ -44,13 +34,23 @@ function Request({ from, to, image }) {
           <br />
           <br />
           <br />
-          <Timer sec={20} />
+          <Timer sec={20} socketId={socketId} setReqest={setReqest} />
           <br />
           <div className="actions-btn">
-            <button className="accept btn" onClick={acceptRequest}>
+            <button
+              className="accept btn"
+              onClick={() => {
+                cancelRequest();
+              }}
+            >
               Accept
             </button>
-            <button className="reject btn" onClick={cancelRequest}>
+            <button
+              className="reject btn"
+              onClick={() => {
+                cancelRequest();
+              }}
+            >
               Reject
             </button>
           </div>

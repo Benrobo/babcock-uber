@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
+import socket from "../../sockets";
 
-function Timer({ sec }) {
+function Timer({ sec, socketId, setReqest }) {
   let [seconds, setSeconds] = useState(sec);
 
   useEffect(() => {
@@ -9,6 +10,8 @@ function Timer({ sec }) {
     }, 1000);
 
     if (seconds === 0) {
+      socket.emit("no-respond", { msg: "No driver responded", id: socketId });
+      setReqest(false);
       clearInterval(interval);
       return;
     }

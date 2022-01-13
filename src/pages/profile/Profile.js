@@ -34,6 +34,7 @@ function Profile() {
   const [to, setTo] = useState("");
   const [status, setStatus] = useState(false);
   const [userimg, setImg] = useState("");
+  const [socketid, setSocketId] = useState("");
   const params = useParams();
   const local = util.getLocalstorageData();
 
@@ -53,16 +54,16 @@ function Profile() {
     if (status) {
       socket.on("users-request", (data) => {
         if (data) {
-          const { from, to } = data.clientData;
+          const { from, to, socketId } = data.clientData;
           const { img } = data.user;
           setReqest(true);
           setFrom(from);
           setTo(to);
           setImg(img);
+          setSocketId(socketId);
         }
       });
     }
-    console.log(status);
   }, [status, setStatus]);
 
   const sendData = {
@@ -87,6 +88,18 @@ function Profile() {
       setError("Something went wrong fetching users data.: " + err.message);
     }
   }, []);
+
+  function cancelRequest() {
+    // emit event to server
+    socket.emit("ride-cancel", { msg: "ride was cancel", id: socketid });
+    setReqest(false);
+  }
+
+  function acceptRequest() {
+    console.log(local);
+
+    // socket.emit("ride-cancel", data)
+  }
 
   return (
     <>
@@ -113,7 +126,14 @@ function Profile() {
             />
             {request && (
               <div className="request-modal">
-                <Request from={from} to={to} image={userimg} />
+                <Request
+                  from={from}
+                  to={to}
+                  image={userimg}
+                  socketId={socketid}
+                  cancelRequest={cancelRequest}
+                  setReqest={setReqest}
+                />
               </div>
             )}
             {/* <UserTrips /> */}
