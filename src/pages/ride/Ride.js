@@ -190,27 +190,34 @@ function StudentRideRequestForm({ driverDetail }) {
     }
   });
 
-  // useEffect(() => {
-  //   socket.on("ride-accepted", (data) => {
-  //     if (data) {
-  //       const { driverId, driverRole } = data;
-  //       setIncomingDriverDetails({ driverId, driverRole });
-  //       setLoading(false);
-  //       setRideLoading(true);
-  //     }
-  //   });
-  //   console.log(incomingDriverDetails);
-  // }, [incomingDriverDetails, setIncomingDriverDetails]);
-
-  socket.on("ride-accepted", (data) => {
-    if (data) {
-      const { driverId, driverRole, driverSocketId } = data;
-      setIncomingDriverDetails({ driverId, driverRole });
-      setLoading(false);
-      setRideLoading(true);
-      console.log(data);
+  useEffect(() => {
+    let isSocketFetched = true;
+    if (isSocketFetched === false) {
+      socket.on("ride-accepted", (data) => {
+        if (data) {
+          const { driverId, driverRole } = data;
+          setIncomingDriverDetails({ driverId, driverRole });
+          setLoading(false);
+          setRideLoading(true);
+          console.log(incomingDriverDetails, "cleanup called!!");
+        }
+      });
     }
-  });
+    // cleanub the event when unmounted or called again
+    return () => {
+      isSocketFetched = false;
+    };
+  }, [incomingDriverDetails]);
+
+  // socket.on("ride-accepted", (data) => {
+  //   if (data) {
+  //     const { driverId, driverRole, driverSocketId } = data;
+  //     setIncomingDriverDetails({ driverId, driverRole });
+  //     setLoading(false);
+  //     setRideLoading(true);
+  //     console.log(data);
+  //   }
+  // });
 
   function searchLocations(text) {
     if (checkAction === "pickup") setPickupSuggestHide(true);

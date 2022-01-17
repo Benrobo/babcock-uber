@@ -222,3 +222,76 @@
   left: 0px;
   z-index: 1000;
 }
+
+/* edit modal container */
+
+.edit-user-modal {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: rgba(17, 16, 16, 0.9);
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 1000;
+}
+
+.edit-user-modal .form-cont {
+  /* width: 70%; */
+  height: auto;
+  position: relative;
+  top: 0px;
+  padding: 15px;
+  background: var(--dark);
+}
+
+.edit-user-modal .form-cont .box {
+  margin-top: 3px;
+  margin-bottom: 5px;
+}
+
+.edit-user-modal .form-cont .box label {
+  opacity: 0.5;
+}
+
+.edit-user-modal .form-cont .box input {
+  border: none;
+  outline: none;
+  border-color: transparent;
+  outline-style: none;
+  background: var(--dark-m);
+  color: #ccc;
+  border-radius: 0px;
+  padding: 10px;
+}
+
+.edit-user-modal .form-cont .box input:focus {
+  border-color: transparent;
+  outline-style: none;
+  outline: none;
+  border: 2px solid var(--green);
+}
+
+.edit-user-modal .form-cont .action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.edit-user-modal .form-cont .action .btn {
+  margin: 10px;
+  padding: 12px;
+}
+
+.edit-user-modal .form-cont .action .btn.save {
+  background: var(--green);
+}
+
+.edit-user-modal .form-cont .action .btn.save.active {
+  opacity: 0.5;
+  pointer-events: none;
+}

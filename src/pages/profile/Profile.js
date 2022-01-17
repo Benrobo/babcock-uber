@@ -40,6 +40,7 @@ function Profile() {
   const [incomingStudentRole, setIncomingStudentRole] = useState("");
   const [showstudentcard, setStudentCard] = useState(false);
   const [studentMainDetails, setStudentMainDetails] = useState([]);
+  const [editstate, setEditState] = useState(false);
   const params = useParams();
   const local = util.getLocalstorageData();
 
@@ -84,16 +85,19 @@ function Profile() {
 
   useEffect(() => {
     try {
-      axios
-        .post("http://localhost:5000/api/users", sendData)
-        .then((res) => {
-          setLoading(false);
-          setAuthUserInfo([res.data]);
-        })
-        .catch((err) => {
-          setLoading(false);
-          setError(err.message);
-        });
+      setLoading(true);
+      setTimeout(() => {
+        axios
+          .post("http://localhost:5000/api/users", sendData)
+          .then((res) => {
+            setLoading(false);
+            setAuthUserInfo([res.data]);
+          })
+          .catch((err) => {
+            setLoading(false);
+            setError(err.message);
+          });
+      }, 1200);
     } catch (err) {
       setLoading(false);
       setError("Something went wrong fetching users data.: " + err.message);
@@ -171,6 +175,7 @@ function Profile() {
               userInfo={authUserInfo}
               loadingState={loading}
               localInfo={local}
+              setEditState={setEditState}
             />
             {request && (
               <div className="request-modal">
@@ -194,6 +199,15 @@ function Profile() {
                   droplocation={to}
                 />
               </div>
+            )}
+
+            {/* edit user info modal */}
+            {editstate && (
+              <EditForm
+                info={authUserInfo.length != 0 ? authUserInfo : []}
+                local={local}
+                setEditState={setEditState}
+              />
             )}
             <div className="space"></div>
           </>
@@ -280,9 +294,12 @@ function StatReview() {
   );
 }
 
-function UserProfileDetails({ userInfo, loadingState, localInfo }) {
-  const [edit, setEdit] = useState(false);
-
+function UserProfileDetails({
+  userInfo,
+  loadingState,
+  localInfo,
+  setEditState,
+}) {
   return (
     <div className="details-cont">
       <li>
@@ -318,7 +335,14 @@ function UserProfileDetails({ userInfo, loadingState, localInfo }) {
         <span className="detail-txt">******</span>
       </li>
 
-      <button className="edit-btn btn">Edit Profile</button>
+      <button
+        className="edit-btn btn"
+        onClick={() => {
+          setEditState(true);
+        }}
+      >
+        Edit Profile
+      </button>
     </div>
   );
 }
@@ -357,6 +381,234 @@ function UserTrips() {
         </div>
       </div>
     </>
+  );
+}
+
+function EditForm({ info, local, setEditState }) {
+  const { name, mail, phoneNumber, usersIdentifier } = info[0];
+  const [details, setDetails] = useState({
+    name: name ? name : null,
+    email: mail ? mail : null,
+    identity: usersIdentifier ? usersIdentifier : null,
+    phoneNumber: phoneNumber ? phoneNumber : null,
+    password: null,
+  });
+
+  const [passwordstate, setPasswordState] = useState(false);
+  const [inputstate, setInputState] = useState(false);
+
+  let formatedID = info !== "" || info !== undefined ? usersIdentifier : "";
+
+  // handle edit form logic
+
+  async function handleEditform() {
+    let sendData = {};
+    if (details.name === "") {
+      return notif.error("name field cant be empty");
+    }
+    if (details.email === "") {
+      return notif.error("email field cant be empty");
+    }
+    if (details.identity === "") {
+      return notif.error("identity field cant be empty");
+    }
+    if (details.phoneNumber === "") {
+      return notif.error("phoneNumber field cant be empty");
+    }
+    if (
+      (details.password === "" || details.password === null) &&
+      passwordstate === true
+    ) {
+      return notif.error("password field cant be empty");
+    }
+
+    sendData["name"] = details.name;
+    sendData["email"] = details.email;
+    sendData["identity"] = details.identity;
+    sendData["phoneNumber"] = details.phoneNumber;
+    if (details.password !== null && passwordstate !== false) {
+      sendData["password"] = details.password;
+    }
+
+    // send data to backend
+    const url = "http://localhost:5000/api/users/editProfile";
+    try {
+      let req = await fetch(url, {
+        method: "post",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: local.id,
+          role: local.role,
+          profileDetails: sendData,
+        }),
+      });
+      let res = await req.json();
+
+      return console.log(req, res);
+
+      if (req.status !== 200 && res.msg) {
+        return notif.error(res.msg);
+      }
+      notif.success("logged in sucessful");
+      const { accessToken, refreshToken } = res;
+      if (
+        util.decodeJwt(refreshToken).error ||
+        util.decodeJwt(refreshToken).msg
+      ) {
+        notif.error(util.decodeJwt(refreshToken));
+        return Error(util.decodeJwt(refreshToken).msg);
+      }
+      const { id, role, status } = util.decodeJwt(refreshToken);
+      const saveuserInfo = {
+        id,
+        role,
+        status,
+        accessToken,
+        refreshToken,
+      };
+      // save data to localstorage
+      util.saveLocalstorage(saveuserInfo);
+      util.redirect(`/profile/${id}`, 1500);
+      return;
+    } catch (e) {
+      notif.error(e.message);
+    }
+  }
+
+  // console.log(details);
+  return (
+    <div className="edit-user-modal">
+      <div className="form-cont">
+        <h3>Edit Profile</h3>
+        <div className="box">
+          <label htmlFor="">name</label>
+          <input
+            type="text"
+            defaultValue={details.name === null ? name : details.name}
+            className="form-control"
+            maxLength={30}
+            placeholder="Full Name"
+            onChange={(e) => {
+              if (e.target.value === "") {
+                setInputState(false);
+              }
+              setInputState(true);
+              setDetails({ ...details, name: e.target.value });
+            }}
+          />
+        </div>
+        <div className="box">
+          <label htmlFor="">email</label>
+          <input
+            type="text"
+            className="form-control"
+            defaultValue={details.email === null ? mail : details.email}
+            maxLength={50}
+            placeholder="Email"
+            onChange={(e) => {
+              if (e.target.value === "") {
+                setInputState(false);
+              }
+              setInputState(true);
+              setDetails({ ...details, email: e.target.value });
+            }}
+          />
+        </div>
+        <div className="box">
+          <label htmlFor="">phonenumber</label>
+          <input
+            type="text"
+            className="form-control"
+            defaultValue={
+              details.phoneNumber === null ? phoneNumber : details.phoneNumber
+            }
+            maxLength={50}
+            placeholder="Email"
+            onChange={(e) => {
+              if (e.target.value === "") {
+                setInputState(false);
+              }
+              setInputState(true);
+              setDetails({ ...details, phoneNumber: e.target.value });
+            }}
+          />
+        </div>
+        <div className="box">
+          <label htmlFor="">matric number</label>
+          <input
+            type="text"
+            className="form-control"
+            defaultValue={
+              details.identity === null
+                ? formatedID
+                : details.identity.split("-")[1]
+            }
+            maxLength={30}
+            placeholder={
+              local.role === "student" ? "Matric Number" : "Licence Platenumber"
+            }
+            onChange={(e) => {
+              if (e.target.value === "") {
+                setInputState(false);
+              }
+              setInputState(true);
+              setDetails({ ...details, identity: e.target.value });
+            }}
+          />
+        </div>
+        <div className="box">
+          <label htmlFor="">
+            password
+            <input
+              type="checkbox"
+              onChange={(e) => {
+                if (e.target.checked) {
+                  return setPasswordState(e.target.checked);
+                }
+                setPasswordState(e.target.checked);
+              }}
+              className="ml-3"
+            />
+          </label>
+          {passwordstate && (
+            <input
+              type="text"
+              className="form-control"
+              defaultValue={details.password}
+              maxLength={30}
+              placeholder="Password"
+              onChange={(e) => {
+                setDetails({ ...details, password: e.target.value });
+                if (e.target.value === "") {
+                  setInputState(false);
+                }
+                setInputState(true);
+              }}
+            />
+          )}
+        </div>
+        <div className="action">
+          <button
+            className="btn btn-danger btn-block"
+            onClick={() => {
+              setEditState(false);
+            }}
+          >
+            Cancel
+          </button>
+          <button
+            className={
+              inputstate ? "btn btn-block save" : "btn btn-block save active"
+            }
+            onClick={handleEditform}
+          >
+            Save Changes
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
 
