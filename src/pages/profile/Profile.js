@@ -422,10 +422,10 @@ function EditForm({ info, local, setEditState }) {
       return notif.error("password field cant be empty");
     }
 
-    sendData["name"] = details.name;
-    sendData["email"] = details.email;
-    sendData["identity"] = details.identity;
-    sendData["phoneNumber"] = details.phoneNumber;
+    sendData["name"] = details.name.trim();
+    sendData["email"] = details.email.trim();
+    sendData["identity"] = details.identity.trim();
+    sendData["phoneNumber"] = details.phoneNumber.trim();
     if (details.password !== null && passwordstate !== false) {
       sendData["password"] = details.password;
     }
@@ -446,13 +446,17 @@ function EditForm({ info, local, setEditState }) {
       });
       let res = await req.json();
 
-      return console.log(req, res);
+      // return console.log(req, res);
 
       if (req.status !== 200 && res.msg) {
         return notif.error(res.msg);
       }
-      notif.success("logged in sucessful");
+      notif.success("Profile info updated sucessful");
       const { accessToken, refreshToken } = res;
+      // clearn the previous token in localstorage and reload the page
+      localStorage.clear();
+      window.location.reload(true);
+      // generate new refresh token
       if (
         util.decodeJwt(refreshToken).error ||
         util.decodeJwt(refreshToken).msg
@@ -477,7 +481,6 @@ function EditForm({ info, local, setEditState }) {
     }
   }
 
-  // console.log(details);
   return (
     <div className="edit-user-modal">
       <div className="form-cont">
@@ -536,7 +539,9 @@ function EditForm({ info, local, setEditState }) {
           />
         </div>
         <div className="box">
-          <label htmlFor="">matric number</label>
+          <label htmlFor="">
+            {local.role === "driver" ? "license plate number" : "matric number"}
+          </label>
           <input
             type="text"
             className="form-control"
@@ -554,7 +559,7 @@ function EditForm({ info, local, setEditState }) {
                 setInputState(false);
               }
               setInputState(true);
-              setDetails({ ...details, identity: e.target.value });
+              setDetails({ ...details, identity: e.target.value.trim() });
             }}
           />
         </div>
