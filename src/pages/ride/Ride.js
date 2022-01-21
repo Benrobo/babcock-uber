@@ -127,7 +127,8 @@ function StudentRideRequestForm({ driverDetail }) {
   const [rideStatus, setRideStatus] = useState(false);
   const [getridedata, setGetrideData] = useState(null);
   const [driverDetails, setDriverDetails] = useState(null);
-  const [incomingDriverDetails, setIncomingDriverDetails] = useState("");
+  const [incomingDriverDetails, setIncomingDriverDetails] = useState(null);
+  const [ridestate, setRideState] = useState(false);
   const [rideloading, setRideLoading] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -148,6 +149,7 @@ function StudentRideRequestForm({ driverDetail }) {
       return notif.error("Fields cant be empty");
     }
     setLoading(true);
+    setRideState(true);
 
     // get client socket ID
     if (
@@ -190,34 +192,15 @@ function StudentRideRequestForm({ driverDetail }) {
     }
   });
 
-  useEffect(() => {
-    let isSocketFetched = true;
-    if (isSocketFetched === false) {
-      socket.on("ride-accepted", (data) => {
-        if (data) {
-          const { driverId, driverRole } = data;
-          setIncomingDriverDetails({ driverId, driverRole });
-          setLoading(false);
-          setRideLoading(true);
-          console.log(incomingDriverDetails, "cleanup called!!");
-        }
-      });
+  socket.on("ride-accepted", (data) => {
+    if (data) {
+      const { driverId, driverRole, driverSocketId } = data;
+      setIncomingDriverDetails({ driverId, driverRole });
+      setLoading(false);
+      setRideLoading(true);
+      // console.log(data);
     }
-    // cleanub the event when unmounted or called again
-    return () => {
-      isSocketFetched = false;
-    };
-  }, [incomingDriverDetails]);
-
-  // socket.on("ride-accepted", (data) => {
-  //   if (data) {
-  //     const { driverId, driverRole, driverSocketId } = data;
-  //     setIncomingDriverDetails({ driverId, driverRole });
-  //     setLoading(false);
-  //     setRideLoading(true);
-  //     console.log(data);
-  //   }
-  // });
+  });
 
   function searchLocations(text) {
     if (checkAction === "pickup") setPickupSuggestHide(true);
@@ -314,7 +297,8 @@ function StudentRideRequestForm({ driverDetail }) {
       {/* driver modal */}
       {rideloading && (
         <div className="driver-modal">
-          <Driver driverDetail={incomingDriverDetails} />
+          {console.log(incomingDriverDetails)}
+          {/* <Driver driverDetail={incomingDriverDetails} />; */}
         </div>
       )}
     </div>
