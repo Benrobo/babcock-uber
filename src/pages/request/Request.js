@@ -1,30 +1,19 @@
-import React, { useState } from "react";
-// import { useParams } from 'react-router'
+import React from "react";
 import { Link } from "react-router-dom";
 import LocationBox from "../../components/LocationBox/LocationBox";
 import { ArrowLeftIcon } from "@heroicons/react/solid";
-import Head from "../../components/MainHead/Head";
 import "./style.css";
-import Navbar from "../../components/Navbar/Navbar";
-
-import axios from "axios";
-import { Util, Notification } from "../../helpers/util";
-import socket from "../../sockets";
 import Timer from "../../components/Timer/Timer";
-const util = new Util();
-const notif = new Notification();
 
 function Request({
   from,
   to,
   image,
   socketId,
-  cancelRequest,
+  rejectRide,
   acceptRequest,
   setReqest,
 }) {
-  let local = util.getLocalstorageData();
-
   return (
     <>
       <div className="request-cont">
@@ -42,7 +31,7 @@ function Request({
           <br />
           <br />
           <br />
-          <Timer sec={20} socketId={socketId} setReqest={setReqest} />
+          <Timer sec={10} socketId={socketId} setReqest={setReqest} />
           <br />
           <div className="actions-btn">
             <button
@@ -56,7 +45,7 @@ function Request({
             <button
               className="reject btn"
               onClick={() => {
-                cancelRequest();
+                rejectRide();
               }}
             >
               Reject

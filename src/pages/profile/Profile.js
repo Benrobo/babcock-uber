@@ -3,13 +3,11 @@ import { useParams } from "react-router";
 import Navbar from "../../components/Navbar/Navbar";
 import Switch from "react-input-switch";
 import "./style.css";
-import { Link } from "react-router-dom";
 import mapImg from "../../assets/img/map-bg.png";
 import Head from "../../components/MainHead/Head";
 import { Util, Notification } from "../../helpers/util";
 import { UserIcon } from "@heroicons/react/solid";
 import axios from "axios";
-import DataContext from "../../context/DataContext";
 import socket from "../../sockets";
 import Request from "../request/Request";
 import Student from "../arrived/Student";
@@ -28,6 +26,7 @@ if (local.error) {
 function Profile() {
   // const { error, authUserInfo, loading } = useContext(DataContext);
   const [authUserInfo, setAuthUserInfo] = useState([]);
+  const [userTrips, setUserTrips] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [request, setReqest] = useState(false);
@@ -40,6 +39,7 @@ function Profile() {
   const [incomingStudentRole, setIncomingStudentRole] = useState("");
   const [showstudentcard, setStudentCard] = useState(false);
   const [studentMainDetails, setStudentMainDetails] = useState([]);
+  const [cancelridemsg, setCancelRideMsg] = useState("");
   const [editstate, setEditState] = useState(false);
   const params = useParams();
   const local = util.getLocalstorageData();
@@ -63,8 +63,7 @@ function Profile() {
     if (status) {
       socket.on("users-request", (data) => {
         if (data) {
-          console.log(data);
-          const { from, to, socketId } = data.clientData;
+          const { from, to, socketId, userId } = data.clientData;
           const { img, id, role } = data.user;
           setReqest(true);
           setFrom(from);
@@ -104,16 +103,40 @@ function Profile() {
     }
   }, []);
 
-  function cancelRequest() {
+  // get users trips
+  useEffect(() => {
+    try {
+      setLoading(true);
+      axios
+        .post("http://localhost:5000/api/users/usersTrips", {
+          userId: local.id,
+        })
+        .then((res) => {
+          setLoading(false);
+          setUserTrips([res.data]);
+        })
+        .catch((err) => {
+          setLoading(false);
+          setError(err.message);
+        });
+    } catch (err) {
+      setLoading(false);
+      setError(
+        "Something went wrong fetching users trips data.: " + err.message
+      );
+    }
+  }, []);
+
+  function rejectRide() {
     // emit event to server
-    socket.emit("ride-cancel", { msg: "ride was cancel", id: socketid });
+    socket.emit("ride-cancel", { msg: "ride was rejected", id: socketid });
     setReqest(false);
   }
 
   async function acceptRequest() {
     socket.emit("ride-accepted", {
       studentSocketId: socketid,
-      driverSocketId: currentSocketid.socketid,
+      driverSocketId: currentSocketid.socketId,
       studentId: incomingStudentId,
       driverId: local.id,
       driverRole: local.role,
@@ -136,7 +159,6 @@ function Profile() {
         }),
       });
       let res = await req.json();
-      console.log(res);
       if (req.status === 200 || req.status === 201) {
         setStudentMainDetails([res]);
         setLoading(false);
@@ -152,6 +174,23 @@ function Profile() {
       notif.error(err.message);
     }
   }
+
+  useEffect(() => {
+    if (cancelridemsg !== "") {
+      notif.error(cancelridemsg);
+    }
+    setTimeout(() => {
+      setCancelRideMsg("");
+    }, 2000);
+  }, [cancelridemsg]);
+
+  // listen for cancel ride request
+  socket.on("ride-cancel", (data) => {
+    if (data) {
+      setCancelRideMsg(data.msg + " by student");
+      setStudentCard(false);
+    }
+  });
 
   return (
     <>
@@ -170,7 +209,7 @@ function Profile() {
               status={status}
               setStatus={setStatus}
             />
-            <StatReview />
+            <StatReview trips={userTrips} />
             <UserProfileDetails
               userInfo={authUserInfo}
               loadingState={loading}
@@ -184,7 +223,7 @@ function Profile() {
                   to={to}
                   image={userimg}
                   socketId={socketid}
-                  cancelRequest={cancelRequest}
+                  rejectRide={rejectRide}
                   acceptRequest={acceptRequest}
                   setReqest={setReqest}
                   driverInfo={authUserInfo}
@@ -197,6 +236,9 @@ function Profile() {
                 <Student
                   studentDetails={studentMainDetails}
                   droplocation={to}
+                  setCancelRideMsg={setCancelRideMsg}
+                  setStudentCard={setStudentCard}
+                  studentSocketId={socketid}
                 />
               </div>
             )}
@@ -275,7 +317,17 @@ function UserInfoHead({ userInfo, loadingState, status, setStatus }) {
   );
 }
 
-function StatReview() {
+function StatReview({ trips }) {
+  let acceptStore = [];
+
+  if (trips !== null) {
+    trips[0].forEach((l, i) => {
+      if (l.type === "accept") {
+        acceptStore.push(l);
+      }
+    });
+  }
+
   return (
     <>
       {/* <p>Stat</p> */}
@@ -283,11 +335,7 @@ function StatReview() {
       <div className="stat-cont">
         <div className="box">
           <div className="text">Accepted Trips</div>
-          <div className="count">23</div>
-        </div>
-        <div className="box">
-          <div className="text">Rejected Trips</div>
-          <div className="count">3</div>
+          <div className="count">{acceptStore.length}</div>
         </div>
       </div>
     </>
@@ -445,8 +493,6 @@ function EditForm({ info, local, setEditState }) {
         }),
       });
       let res = await req.json();
-
-      // return console.log(req, res);
 
       if (req.status !== 200 && res.msg) {
         return notif.error(res.msg);

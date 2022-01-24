@@ -2,26 +2,49 @@ import React from "react";
 import { StarIcon, PhoneIcon, XCircleIcon } from "@heroicons/react/solid";
 
 import "./style.css";
-import { Link } from "react-router-dom";
+import socket from "../../sockets";
 
-function Student({ studentDetails, droplocation }) {
+function Student({
+  studentDetails,
+  droplocation,
+  setStudentCard,
+  setCancelRideMsg,
+  studentSocketId,
+}) {
   return (
     <div>
       <DriverDetailsBox
         studentDetails={studentDetails}
         droplocation={droplocation}
+        setStudentCard={setStudentCard}
+        setCancelRideMsg={setCancelRideMsg}
+        studentSocketId={studentSocketId}
       />
     </div>
   );
 }
 
-function DriverDetailsBox({ studentDetails, droplocation }) {
-  console.log(studentDetails);
+function DriverDetailsBox({
+  studentDetails,
+  droplocation,
+  setStudentCard,
+  setCancelRideMsg,
+  studentSocketId,
+}) {
+  function cancelRequest() {
+    // emit event to server
+    socket.emit("ride-cancel", {
+      msg: "ride was cancel",
+      id: studentSocketId,
+    });
+    setStudentCard(false);
+    setCancelRideMsg("Ride canceled");
+  }
+
   return (
     <>
       {studentDetails !== undefined
         ? studentDetails.map((data, i) => {
-            console.log(data);
             return (
               <div className="driver-ride-cont" key={data.usersIdentifier}>
                 <div className="details-box">
@@ -42,13 +65,18 @@ function DriverDetailsBox({ studentDetails, droplocation }) {
                     <div className="left bx">
                       <PhoneIcon className="icon" />
                       {/* <span>Call Driver</span> */}
-                      <Link to={`tel: ${data.phoneNumber}`}>
-                        <span>Call Driver</span>
-                      </Link>
+                      <a href={`tel:+${data.phoneNumber}`}>
+                        <span>Call Student</span>
+                      </a>
                     </div>
                   </div>
                 </div>
-                <button className="btn btn-danger ride-status">
+                <button
+                  className="btn btn-danger ride-status"
+                  onClick={() => {
+                    cancelRequest();
+                  }}
+                >
                   Cancel Ride
                 </button>
               </div>

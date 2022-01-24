@@ -125,7 +125,7 @@ function StudentRideRequestForm({ driverDetail }) {
   const [checkAction, setAction] = useState("");
   const [cancelridemsg, setCancelRideMsg] = useState("");
   const [rideStatus, setRideStatus] = useState(false);
-  const [getridedata, setGetrideData] = useState(null);
+  // const [getridedata, setGetrideData] = useState(null);
   const [driverDetails, setDriverDetails] = useState(null);
   const [incomingDriverDetails, setIncomingDriverDetails] = useState(null);
   const [ridestate, setRideState] = useState(false);
@@ -134,6 +134,9 @@ function StudentRideRequestForm({ driverDetail }) {
 
   let params = useParams();
   const local = util.getLocalstorageData();
+
+  // get current socketid
+  let currentSocketid = JSON.parse(localStorage.getItem("socket"));
 
   if (
     params.id !== local.id ||
@@ -189,18 +192,28 @@ function StudentRideRequestForm({ driverDetail }) {
     if (data) {
       setCancelRideMsg(data.msg);
       setRideLoading(false);
+      setLoading(false);
     }
   });
 
-  socket.on("ride-accepted", (data) => {
-    if (data) {
-      const { driverId, driverRole, driverSocketId } = data;
-      setIncomingDriverDetails({ driverId, driverRole });
-      setLoading(false);
-      setRideLoading(true);
-      // console.log(data);
-    }
-  });
+  useEffect(() => {
+    socket.on("ride-accepted", (data) => {
+      if (data) {
+        setIncomingDriverDetails({ ...data });
+        setLoading(false);
+        setRideLoading(true);
+      }
+    });
+  }, [incomingDriverDetails, setIncomingDriverDetails]);
+
+  function cancelRequest() {
+    socket.emit("ride-cancel", {
+      msg: "ride was cancel",
+      id: currentSocketid.socketId,
+    });
+    setLoading(false);
+    setCancelRideMsg("Ride canceled");
+  }
 
   function searchLocations(text) {
     if (checkAction === "pickup") setPickupSuggestHide(true);
@@ -213,6 +226,7 @@ function StudentRideRequestForm({ driverDetail }) {
 
     setSuggestions([...matches]);
   }
+
   return (
     <div className="ride-cont">
       <div className="form">
@@ -280,9 +294,8 @@ function StudentRideRequestForm({ driverDetail }) {
               <XIcon
                 className="icon"
                 onClick={() => {
-                  setLoading(false);
-                  setGetrideData(null);
-                  notif.error("ride request canceled");
+                  // setGetrideData(null);
+                  cancelRequest();
                 }}
               />
             </div>
@@ -297,8 +310,12 @@ function StudentRideRequestForm({ driverDetail }) {
       {/* driver modal */}
       {rideloading && (
         <div className="driver-modal">
-          {console.log(incomingDriverDetails)}
-          {/* <Driver driverDetail={incomingDriverDetails} />; */}
+          <Driver
+            incomingDriverDetails={incomingDriverDetails}
+            setRideLoading={setRideLoading}
+            setCancelRideMsg={setCancelRideMsg}
+          />
+          ;
         </div>
       )}
     </div>

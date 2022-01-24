@@ -1,22 +1,37 @@
 import React from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import { StarIcon, PhoneIcon, XCircleIcon } from "@heroicons/react/solid";
-
+import socket from "../../sockets";
 import "./style.css";
 
-function Driver({ driverDetails }) {
-  console.log(driverDetails);
-  if (driverDetails === undefined) {
-    // window.location.reload();
+function Driver({ incomingDriverDetails, setRideLoading, setCancelRideMsg }) {
+  if (incomingDriverDetails === undefined) {
+    window.location.reload();
   }
   return (
     <div>
-      <DriverDetailsBox driverDetails={driverDetails} />
+      <DriverDetailsBox
+        driverDetails={incomingDriverDetails}
+        setRideLoading={setRideLoading}
+        setCancelRideMsg={setCancelRideMsg}
+      />
     </div>
   );
 }
 
-function DriverDetailsBox({ driverDetails }) {
+function DriverDetailsBox({ driverDetails, setRideLoading, setCancelRideMsg }) {
+  console.log(driverDetails);
+
+  function cancelRequest() {
+    // emit event to server
+    socket.emit("ride-cancel", {
+      msg: "ride was cancel",
+      id: driverDetails.driverSocketId,
+    });
+    setRideLoading(false);
+    setCancelRideMsg("Ride canceled");
+  }
+
   return (
     <div className="details-box">
       <div className="top-cont">
@@ -38,11 +53,22 @@ function DriverDetailsBox({ driverDetails }) {
       <div className="bottom-cont">
         <div className="left bx">
           <PhoneIcon className="icon" />
-          <span>Call Driver</span>
+          <a href={`tel:+${driverDetails.phoneNumber}`}>Call Driver</a>
         </div>
-        <div className="right bx">
+        <div
+          className="right bx"
+          onClick={() => {
+            cancelRequest();
+          }}
+        >
           <XCircleIcon className="icon" />
-          <span>Cancel Ride</span>
+          <span
+            onClick={() => {
+              cancelRequest();
+            }}
+          >
+            Cancel Ride
+          </span>
         </div>
       </div>
     </div>
