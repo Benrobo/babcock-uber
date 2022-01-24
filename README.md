@@ -118,6 +118,126 @@ But holdon a bit, we cant just run this fullstack application without the need o
 
 Doing this would install all the dependencies which was used in this project.
 
+Before running the backend api server, our backend logic depends on a `Postgresql` database which is used to store user info, to setup `postgresql` database on your system, Please watch the below videos to download, install and setup postgresql database on your pc.
+
+- [x] Postgresql Installation
+  - [windows: https://www.youtube.com/watch?v=e1MwsT5FJRQ](https://www.youtube.com/watch?v=e1MwsT5FJRQ)
+  - [Mac: https://www.youtube.com/watch?v=5AOkxqFaYEE]
+    -(https://www.youtube.com/watch?v=5AOkxqFaYEE)
+  - [Linux: https://www.youtube.com/watch?v=-LwI4HMR_Eg&t=160s](https://www.youtube.com/watch?v=-LwI4HMR_Eg&t=160s)
+
+After installation was successfull, kindly check if postgresql is enabled globally on your pc using the below command
+
+```
+//windows
+C:/> psql -U postgres // the name which was set when installing it.
+// Linux
+benrobo@benrobo:~/$ sudo -i -u postgres psql
+```
+
+Doing this would show the below image if everything works successfully.
+
+- [x] windows
+      <img src="https://linuxhint.com/wp-content/uploads/2021/09/image12-4.png">
+- [x] Linux
+      <img src="https://sqlserverguides.com/wp-content/uploads/2021/06/PostgreSQL-connect-to-postgres-database.png">
+- [x] Mac
+      <img src="https://www.sqlshack.com/wp-content/uploads/2021/04/creating-new-user-in-postgres.png">
+
+If all went well, continue with the following steps
+
+4. Create necessary database and tables in postgresql
+
+Within the `babcock-api` there exist a file called `.sql`, this file contains the queries you need to make to create both the tables and database of the server. Simply copy each statement one after the other and paste into the postgresql terminal after loggin in. Starting from
+
+```sql
+1. -- Database
+
+CREATE DATABASE "babcock-uber";
+
+```
+
+3. Connect the database created using the command below
+
+```js
+    postgres=# \c "babcock-uber"
+```
+
+after doing that, the postgresql terminal directory should change into the one below having the database name
+
+```js
+ babcock-uber=#
+```
+
+4. Copy and Paste all queries line after line into the postgresql database terminal
+
+```sql
+
+1. -- organization table
+
+CREATE TABLE "usersTable"(
+    id TEXT UNIQUE NOT NULL PRIMARY KEY,
+    "name" TEXT NOT NULL,
+    "mail" TEXT NOT NULL UNIQUE,
+    "password" TEXT NOT NULL,
+    "usersIdentifier" TEXT NOT NULL,
+    "profilePics" TEXT NOT NULL,
+    "userRole" TEXT,
+    "status" TEXT NOT NULL,
+    "phoneNumber" TEXT NOT NULL,
+    "refreshToken" TEXT NOT NULL,
+    "createdAt" TEXT NOT NULL
+);
+
+2. -- trips table
+
+CREATE TABLE "trips"(
+    id TEXT UNIQUE NOT NULL PRIMARY KEY,
+    "studentId" TEXT NOT NULL,
+    "driverId" TEXT NOT NULL,
+    "type" TEXT NOT NULL,
+    "createdAt" TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+```
+
+After doing that, verify if all tables were correctly created using the command below
+
+```js
+ babcock-uber=# \d
+```
+
+this should print all tables present in that database.
+
+If not, then you inserted the queries wrongly, else congratulation you've just setup your backend database server.
+
+### Run the backend api server and client
+
+After applying all necessary instructions correctly, it time to put all this to the test using the below command.
+
+Navigate to where the `babcock-uber` and `babcock-api` was downloaded and run the command below
+
+```js
+
+    ... Running the client app
+
+    // babcock-uber client
+    C:/users/benrobo/Desktop/babcock-uber> npm start
+
+    // this should spin up the local react server in your browser. with the url of http://localhost:3000
+
+    ... Running the backend api server
+        // babcock-uber client
+    C:/users/benrobo/Desktop/babcock-uber> npm start
+
+    // this should spin up the local nodejs server in your terminal.
+
+```
+
+you should be presented with this screen
+
+<img src="https://raw.githubusercontent.com/Benrobo/babcock-uber/main/readmeImg/home.png">
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
