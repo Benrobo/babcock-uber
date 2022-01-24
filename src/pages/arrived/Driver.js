@@ -20,8 +20,6 @@ function Driver({ incomingDriverDetails, setRideLoading, setCancelRideMsg }) {
 }
 
 function DriverDetailsBox({ driverDetails, setRideLoading, setCancelRideMsg }) {
-  console.log(driverDetails);
-
   function cancelRequest() {
     // emit event to server
     socket.emit("ride-cancel", {
@@ -35,19 +33,12 @@ function DriverDetailsBox({ driverDetails, setRideLoading, setCancelRideMsg }) {
   return (
     <div className="details-box">
       <div className="top-cont">
-        <img
-          src={"https://avatars.dicebear.com/api/micah/ben.svg"}
-          alt=""
-          className="img-fluid"
-        />
+        <img src={driverDetails.img} alt="" className="img-fluid" />
         <div className="info">
-          <p className="name">
+          <h5 className="name">
             {driverDetails === undefined ? "Undefined" : driverDetails.name}
-          </p>
-          <span className="trips-count">
-            <small>Trips </small>
-            120 <StarIcon className="icon" />
-          </span>
+          </h5>
+          <span className="trips-count">Driver</span>
         </div>
       </div>
       <div className="bottom-cont">

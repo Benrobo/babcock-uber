@@ -1,3 +1,7 @@
+### Babcock-Uber App
+
+Get a ride quickly as possible using this app meant for the babcock university.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

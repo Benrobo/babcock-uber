@@ -49,7 +49,7 @@ function DriverDetailsBox({
               <div className="driver-ride-cont" key={data.usersIdentifier}>
                 <div className="details-box">
                   <div className="top-cont">
-                    <img src={data.phoneNumber} alt="" className="img-fluid" />
+                    <img src={data.profilePics} alt="" className="img-fluid" />
                     <div className="info">
                       <p className="name">{data.name}</p>
                       <div className="location-info">
