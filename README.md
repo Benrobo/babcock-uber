@@ -11,11 +11,112 @@ Get a ride quickly as possible using this app meant for the babcock university.
 
 ##### Ride Request Accepted Page (Student [left], Driver [right])
 
-<img src="https://raw.githubusercontent.com/Benrobo/babcock-uber/main/readmeImg/request.png">
+<img src="https://raw.githubusercontent.com/Benrobo/babcock-uber/main/readmeImg/babcock-ride.png">
 
 ##### Request Accepted Page (Student [left], Driver [right])
 
 <img src="https://raw.githubusercontent.com/Benrobo/babcock-uber/main/readmeImg/babcock-request.png">
+
+## Getting Started
+
+### Tech Stacks.
+
+This project is created using the below technologies:
+
+- Frontend
+
+  - [React](https://reactjs.org/) :- A single page application library meant for creating reusable UI components.
+  - [Notyf](https://carlosroso.com/notyf/) :- A smooth toast notification library.
+  - [React-Router](https://reactrouter.com/) :- A react dynamic routing library.
+  - [Socket.io_client](https://socket.io/) :- A real-time bi-directional communication library between client and server.
+
+- Backend
+  - [Node.js](https://nodejs.org/en/) :- A javascript runtime environment made for building realtime , data intensive applications.
+  - [Express.js](https://expressjs.com/) :- is a back end web application framework for Node.js, released as free and open-source software under the MIT License. It is designed for building web applications and APIs
+  - [Socket.io_client](https://socket.io/) :- A real-time bi-directional communication library between client and server.
+- Database Management
+  - [Postgresql](https://www.postgresql.org/) :- open-source relational database management system emphasizing extensibility and SQL compliance
+
+### Running Frontend Locally.
+
+Running this project locally it is required you have the above tools pre-installed on your pc, if not, follow the instructions below.
+
+1. Download or Clone The Project.
+
+Using the below command means you have git installed on your pc if not simply download the project from this site.
+
+```
+ git clone https://github.com/Benrobo/babcock-uber.git
+```
+
+2. Open the folder where it was downloaded on the terminal, in my case it would be
+
+```
+   // windows
+
+   C:/user/Desktop/babcock-uber>
+
+   // linux
+   benrobo@benrobo:~/Desktop/babcock-uber$
+```
+
+3. Install all Dependencies.
+   Before making use of the command stated below make sure you have the latest version of nodejs installed, if not here is a video on how to download and setup nodejs on your pc.
+
+- windows
+  - [https://www.youtube.com/watch?v=GjfYHwlFI-c](https://www.youtube.com/watch?v=GjfYHwlFI-c)
+- Mac
+  - [https://www.youtube.com/watch?v=0i-gstqgjuE](https://www.youtube.com/watch?v=0i-gstqgjuE)
+- Linux
+  - [https://www.youtube.com/watch?v=OMhMnj7SBRQ](https://www.youtube.com/watch?v=OMhMnj7SBRQ)
+
+After doing that, make sure to check if it installed correctly on your pc. To verify, simply use the below command
+
+```
+ node --version
+ //and
+ npm --version
+```
+
+The above command would print each version of the node.js and npm package if installed correctly.
+
+Now let install all dependencies in our client application which was downloaded previously using the command below.
+
+```
+   C:/user/Desktop/babcock-uber> npm install
+```
+
+If everything installed sucessfully with no error, congratulation your're all setup for the client application to be view on the browser.
+But holdon a bit, we cant just run this fullstack application without the need of a `backend`. Now let setup our backend
+
+### Setting up the backend and database logic.
+
+1. Download or clone the backend api logic using the instructions below
+
+   - [x] Download the project from here [babcock-api](https://github.com/Benrobo/babcock-api)
+
+2. After downloading the project into your pc, move into the directory where you downloded it, in my case it
+
+```
+   // windows
+
+   C:/user/Desktop/babcock-api>
+
+   // linux
+   benrobo@benrobo:~/Desktop/babcock-api$
+```
+
+3. Now installed all the dependencies present in the project `package.json` file using
+
+```
+   // windows
+   C:/user/Desktop/babcock-api> npm install
+
+   // linux
+   benrobo@benrobo:~/Desktop/babcock-api$ npm install
+```
+
+Doing this would install all the dependencies which was used in this project.
 
 # Getting Started with Create React App
 
