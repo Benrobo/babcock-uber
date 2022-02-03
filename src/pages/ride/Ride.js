@@ -196,6 +196,14 @@ function StudentRideRequestForm({ driverDetail }) {
     }
   });
 
+  socket.on("no-driver", (data) => {
+    if (data) {
+      setCancelRideMsg(data.message);
+      setRideLoading(false);
+      setLoading(false);
+    }
+  });
+
   useEffect(() => {
     socket.on("ride-accepted", (data) => {
       if (data) {
